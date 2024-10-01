@@ -1,0 +1,32 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Full viewport height */
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+app-sidenav {
+    width: 350px;
+    /* Fixed width for sidenav */
+    height: 100%;
+    /* Full height */
+}
+
+.content {
+    flex-grow: 1;
+    padding: 16px;
+    overflow-y: auto;
+    /* Allow content scrolling */
+}
+
+app-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}

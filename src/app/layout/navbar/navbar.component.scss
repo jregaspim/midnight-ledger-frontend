@@ -1,0 +1,19 @@
+.app-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.spacer {
+    flex: 1;
+}
+
+mat-icon {
+    margin-right: 16px;
+    cursor: pointer;
+}
+
+mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

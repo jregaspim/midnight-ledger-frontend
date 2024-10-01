@@ -1,0 +1,55 @@
+<div class="budget-container">
+    <mat-card>
+        <mat-card-title>Set Your Budgets</mat-card-title>
+        <mat-card-content>
+            <form>
+                <mat-form-field>
+                    <mat-label>Category</mat-label>
+                    <input matInput [(ngModel)]="newBudget.category" name="category">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Budget Amount</mat-label>
+                    <input matInput type="number" [(ngModel)]="newBudget.amount" name="amount">
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="addBudget()">Add Budget</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-title>Current Budgets</mat-card-title>
+        <mat-card-content>
+            <table mat-table [dataSource]="budgets">
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef> Category </th>
+                    <td mat-cell *matCellDef="let budget">{{ budget.category }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef> Budget Amount </th>
+                    <td mat-cell *matCellDef="let budget">{{ budget.amount | currency }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="used">
+                    <th mat-header-cell *matHeaderCellDef> Amount Used </th>
+                    <td mat-cell *matCellDef="let budget; let i = index">
+                        <input matInput type="number" [(ngModel)]="budget.used"
+                            (ngModelChange)="updateUsedAmount(i, budget.used)">
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let budget; let i = index">
+                        <button mat-button color="warn" (click)="deleteBudget(i)">Delete</button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

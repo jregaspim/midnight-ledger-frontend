@@ -1,0 +1,41 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened>
+        <mat-nav-list>
+            <mat-list-item routerLink="/dashboard">
+                <mat-icon>dashboard</mat-icon>
+                Dashboard
+            </mat-list-item>
+            <mat-list-item routerLink="/income">
+                <mat-icon>attach_money</mat-icon>
+                Income
+            </mat-list-item>
+            <mat-list-item routerLink="/expenses">
+                <mat-icon>money_off</mat-icon>
+                Expenses
+            </mat-list-item>
+            <mat-list-item routerLink="/budget">
+                <mat-icon>account_balance_wallet</mat-icon>
+                Budget
+            </mat-list-item>
+            <mat-list-item routerLink="/goals">
+                <mat-icon>flag</mat-icon>
+                Goals
+            </mat-list-item>
+            <mat-list-item routerLink="/reports">
+                <mat-icon>bar_chart</mat-icon>
+                Reports
+            </mat-list-item>
+            <mat-list-item routerLink="/recurring">
+                <mat-icon>repeat</mat-icon>
+                Recurring Transactions
+            </mat-list-item>
+            <mat-list-item routerLink="/settings">
+                <mat-icon>settings</mat-icon>
+                Settings
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <ng-content></ng-content>
+    </mat-sidenav-content>
+</mat-sidenav-container>

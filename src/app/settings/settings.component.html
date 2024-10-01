@@ -1,0 +1,33 @@
+<mat-card>
+    <mat-card-title>Settings</mat-card-title>
+    <mat-card-content>
+        <form>
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput [(ngModel)]="userSettings.username" name="username" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput [(ngModel)]="userSettings.email" name="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Theme</mat-label>
+                <mat-select [(ngModel)]="userSettings.theme" name="theme">
+                    <mat-option value="light">Light</mat-option>
+                    <mat-option value="dark">Dark</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-checkbox [(ngModel)]="userSettings.notificationPreferences" name="notifications">
+                Enable Notifications
+            </mat-checkbox>
+
+            <div>
+                <button mat-raised-button color="primary" (click)="saveSettings()">Save</button>
+                <button mat-button color="warn" (click)="resetSettings()">Reset</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
