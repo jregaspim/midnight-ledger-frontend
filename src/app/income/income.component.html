@@ -1,47 +1,125 @@
 <div class="income-container">
     <!-- Income Overview -->
     <mat-card>
-        <mat-card-title>Total Income</mat-card-title>
-        <mat-card-content>
-            <h3>${{ totalIncome.toFixed(2) }}</h3> <!-- Bind to totalIncome directly -->
+        <mat-card-title>Your Income</mat-card-title>
+        <mat-card-content class="text-center">
+            <h3>${{ totalIncome.toFixed(2) }}</h3>
+
+            <p>Select a filter period:</p>
+            <div class="btn-group" role="group" aria-label="Filter options">
+                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'all' }"
+                    (click)="filterIncome('all')">All</button>
+                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'day' }"
+                    (click)="filterIncome('day')">By Day</button>
+                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'week' }"
+                    (click)="filterIncome('week')">By Week</button>
+                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'month' }"
+                    (click)="filterIncome('month')">By Month</button>
+                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'year' }"
+                    (click)="filterIncome('year')">By Year</button>
+            </div>
+
+            <div class="income-comparison">
+                <span>
+                    Last Month Gain/Loss Comparison:
+                    <b [ngStyle]="{'color': calculateMonthlyComparison() >= 0 ? 'green' : 'red'}">
+                        <mat-icon *ngIf="calculateMonthlyComparison() >= 0">arrow_upward</mat-icon>
+                        <mat-icon *ngIf="calculateMonthlyComparison() < 0">arrow_downward</mat-icon>
+                        {{ calculateMonthlyComparison() }}%
+                    </b>
+                </span>
+                <span style="margin-left: 20px;">
+                    Last Yearly Gain/Loss Comparison:
+                    <b [ngStyle]="{'color': calculateYearlyComparison() >= 0 ? 'green' : 'red'}">
+                        <mat-icon *ngIf="calculateYearlyComparison() >= 0">arrow_upward</mat-icon>
+                        <mat-icon *ngIf="calculateYearlyComparison() < 0">arrow_downward</mat-icon>
+                        {{ calculateYearlyComparison() }}%
+                    </b>
+                </span>
+            </div>
         </mat-card-content>
     </mat-card>
+
+
+
+
 
     <!-- Add Income Transaction Form -->
     <mat-card>
         <mat-card-title>Add Income Transaction</mat-card-title>
         <mat-card-content>
             <form>
-                <mat-form-field>
-                    <mat-label>Amount</mat-label>
-                    <input matInput type="number" [(ngModel)]="newTransaction.amount" name="amount">
-                </mat-form-field>
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Amount</mat-label>
+                            <input matInput type="number" [(ngModel)]="newTransaction.amount" name="amount" required>
+                            <mat-error *ngIf="newTransaction.amount <= 0">Please enter a valid amount</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                <mat-form-field>
-                    <mat-label>Date</mat-label>
-                    <input matInput type="date" [(ngModel)]="newTransaction.date" name="date">
-                </mat-form-field>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Date</mat-label>
+                            <input matInput type="date" [(ngModel)]="newTransaction.transactionDate"
+                                name="transactionDate" required>
+                            <mat-error *ngIf="!newTransaction.transactionDate">Please enter a valid date</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                <mat-form-field>
-                    <mat-label>Category</mat-label>
-                    <input matInput [(ngModel)]="newTransaction.category" name="category">
-                </mat-form-field>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Category</mat-label>
+                            <mat-select [(ngModel)]="newTransaction.category" name="category" required>
+                                <mat-option value="Salary">Salary</mat-option>
+                                <mat-option value="Business">Business</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="!newTransaction.category">Please select a category</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
 
-                <mat-form-field>
-                    <mat-label>Description</mat-label>
-                    <textarea matInput [(ngModel)]="newTransaction.description" name="description"></textarea>
-                </mat-form-field>
+                <div class="row">
+                    <div class="col-md-12">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Description</mat-label>
+                            <input matInput [(ngModel)]="newTransaction.description" name="description">
+                        </mat-form-field>
+                    </div>
+                </div>
 
                 <button mat-raised-button color="primary" (click)="addTransaction()">Add Income</button>
             </form>
         </mat-card-content>
     </mat-card>
 
+
     <!-- Transaction List -->
     <mat-card>
         <mat-card-title>Income Transactions</mat-card-title>
         <mat-card-content>
-            <table mat-table [dataSource]="incomeTransactions">
+            <div class="filter-controls">
+                <mat-form-field appearance="fill">
+                    <mat-label>Select Month</mat-label>
+                    <mat-select [(ngModel)]="selectedMonth" (selectionChange)="filterTransactions()">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let month of months" [value]="month.value">
+                            {{ month.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Select Year</mat-label>
+                    <mat-select [(ngModel)]="selectedYear" (selectionChange)="filterTransactions()">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let year of years" [value]="year">
+                            {{ year }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <table mat-table [dataSource]="filteredTransactions">
                 <ng-container matColumnDef="amount">
                     <th mat-header-cell *matHeaderCellDef> Amount </th>
                     <td mat-cell *matCellDef="let transaction">{{ transaction.amount | currency }}</td>
@@ -49,7 +127,7 @@
 
                 <ng-container matColumnDef="date">
                     <th mat-header-cell *matHeaderCellDef> Date </th>
-                    <td mat-cell *matCellDef="let transaction">{{ transaction.date | date }}</td>
+                    <td mat-cell *matCellDef="let transaction">{{ transaction.transactionDate | date }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="category">
@@ -72,6 +150,9 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+            <div class="total-income" mt-5>
+                <p>= ${{ totalIncome.toFixed(2) }}</p>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>
