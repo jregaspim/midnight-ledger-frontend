@@ -1,0 +1,14 @@
+mat-card {
+    padding: 20px;
+}
+
+mat-form-field {
+    margin: 5px; // Adjust the value as needed
+}
+
+.filter-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+    /* Optional: Add space below the filter controls */
+}

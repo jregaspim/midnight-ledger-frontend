@@ -23,3 +23,10 @@ mat-form-field {
     margin-bottom: 16px;
     /* Optional: Add space below the filter controls */
 }
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

@@ -1,4 +1,4 @@
-export interface IncomeTransactionRequest {
+export interface TransactionRequest {
     amount: number;
     transactionDate: string; // Corrected type to string
     category: string;
@@ -6,7 +6,7 @@ export interface IncomeTransactionRequest {
     transactionType: string;
 }
 
-export interface IncomeTransactionReponse {
+export interface TransactionReponse {
     id: number;
     amount: number;
     transactionDate: string;

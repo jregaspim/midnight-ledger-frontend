@@ -9,8 +9,9 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../service/transaction.service';
 import { MatSelectModule } from '@angular/material/select';
-import { IncomeTransactionReponse, IncomeTransactionRequest } from '../model/transaction-model';
+import { TransactionReponse, TransactionRequest } from '../model/transaction-model';
 import { MatIconModule } from '@angular/material/icon';
+import { TransactionListComponent } from '../shared/component/transaction-list/transaction-list.component';
 
 @Component({
   selector: 'app-income',
@@ -28,14 +29,15 @@ import { MatIconModule } from '@angular/material/icon';
     DatePipe,
     CommonModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    TransactionListComponent
   ]
 })
 export class IncomeComponent implements OnInit {
   displayedColumns: string[] = ['amount', 'date', 'category', 'description', 'actions'];
-  incomeTransactions: IncomeTransactionReponse[] = [];
-  filteredTransactions: IncomeTransactionReponse[] = [];
-  newTransaction: IncomeTransactionRequest = {
+  incomeTransactions: TransactionReponse[] = [];
+  filteredTransactions: TransactionReponse[] = [];
+  newTransaction: TransactionRequest = {
     amount: 0,
     transactionDate: '',
     category: '',
@@ -45,39 +47,21 @@ export class IncomeComponent implements OnInit {
 
   totalIncome: number = 0;
   selectedFilter: string = 'all';
+  transactionType: string = 'Income'
 
-  selectedMonth: number | null = null;
-  selectedYear: number | null = null;
-  months = [
-    { value: 1, viewValue: 'January' },
-    { value: 2, viewValue: 'February' },
-    { value: 3, viewValue: 'March' },
-    { value: 4, viewValue: 'April' },
-    { value: 5, viewValue: 'May' },
-    { value: 6, viewValue: 'June' },
-    { value: 7, viewValue: 'July' },
-    { value: 8, viewValue: 'August' },
-    { value: 9, viewValue: 'September' },
-    { value: 10, viewValue: 'October' },
-    { value: 11, viewValue: 'November' },
-    { value: 12, viewValue: 'December' }
-  ];
-
-  // Example years from the current year to a specific past year
-  years: number[] = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i);
 
   monthlyIncome: { current: number; last: number } = { current: 0, last: 0 };
   yearlyIncome: { current: number; last: number } = { current: 0, last: 0 };
+
+  isFormVisible: boolean = true;
 
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
     this.getTransactions();
-
   }
 
   updateIncomeComparisons() {
-    console.log(this.incomeTransactions);
     this.monthlyIncome.current = this.incomeTransactions.filter(transaction => {
       const transactionDate = new Date(transaction.transactionDate);
       return transactionDate.getMonth() === new Date().getMonth() &&
@@ -89,8 +73,6 @@ export class IncomeComponent implements OnInit {
       return transactionDate.getMonth() === new Date().getMonth() - 1 &&
         transactionDate.getFullYear() === new Date().getFullYear();
     }).reduce((sum, t) => sum + t.amount, 0);
-
-    console.log(this.monthlyIncome);
 
     this.yearlyIncome.current = this.incomeTransactions.filter(transaction => {
       const transactionDate = new Date(transaction.transactionDate);
@@ -126,7 +108,6 @@ export class IncomeComponent implements OnInit {
   getTransactions() {
     this.transactionService.getAllTransaction('INCOME').subscribe(
       (response) => {
-        console.log(response);
         this.incomeTransactions = response;
         this.updateIncomeComparisons();
         this.filterIncome('all');
@@ -165,19 +146,7 @@ export class IncomeComponent implements OnInit {
     this.updateTotalIncome();
   }
 
-  filterTransactions() {
-    this.filteredTransactions = this.incomeTransactions.filter(transaction => {
-      const transactionDate = new Date(transaction.transactionDate);
-      const isMonthMatch = this.selectedMonth !== null ? transactionDate.getMonth() + 1 === this.selectedMonth : true;
-      const isYearMatch = this.selectedYear !== null ? transactionDate.getFullYear() === this.selectedYear : true;
-      return isMonthMatch && isYearMatch;
-    });
-
-    this.updateTotalIncome();
-  }
-
   addTransaction() {
-    console.log(this.newTransaction)
     this.transactionService.saveTransaction(this.newTransaction).subscribe(
       (response) => {
         console.log('Transaction saved successfully:', response);
@@ -189,26 +158,12 @@ export class IncomeComponent implements OnInit {
     );
   }
 
-  deleteTransaction(index: number): void {
-    console.log("id: ", index)
-    const transactionToDelete = this.filteredTransactions[index];
-
-    if (transactionToDelete) {
-      this.transactionService.deleteTransaction(transactionToDelete.id).subscribe({
-        next: () => {
-          this.filteredTransactions.splice(index, 1);
-          this.updateTotalIncome();
-          window.location.reload();
-        },
-        error: (error) => {
-          console.error('Error deleting transaction:', error);
-        }
-      });
-    }
-  }
-
   updateTotalIncome() {
     this.totalIncome = this.filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
+  }
+
+  toggleForm() {
+    this.isFormVisible = !this.isFormVisible;
   }
 
 }
