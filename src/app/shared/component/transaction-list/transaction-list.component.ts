@@ -6,6 +6,7 @@ import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TransactionService } from '../../../service/transaction.service';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     MatFormFieldModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatButtonModule
   ]
 })
 export class TransactionListComponent implements OnInit, OnChanges {
@@ -31,7 +33,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
   filteredTransactions: TransactionReponse[] = [];
 
-  displayedColumns: string[] = ['amount', 'date', 'category', 'description'];
+  displayedColumns: string[] = ['amount', 'date', 'category', 'description', 'actions'];
   totalIncome: number = 0;
 
   selectedMonth: number | null = null;

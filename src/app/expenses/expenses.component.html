@@ -1,110 +1,52 @@
 <div class="income-container">
-    <!-- Income Overview -->
     <mat-card>
         <mat-card-title>Your Expenses</mat-card-title>
         <mat-card-content class="text-center">
-            <h3>${{ totalIncome.toFixed(2) }}</h3>
-
-            <p>Select a filter period:</p>
-            <div class="btn-group" role="group" aria-label="Filter options">
-                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'all' }"
-                    (click)="filterIncome('all')">All</button>
-                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'day' }"
-                    (click)="filterIncome('day')">By Day</button>
-                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'week' }"
-                    (click)="filterIncome('week')">By Week</button>
-                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'month' }"
-                    (click)="filterIncome('month')">By Month</button>
-                <button mat-button color="primary" [ngClass]="{ 'selected': selectedFilter === 'year' }"
-                    (click)="filterIncome('year')">By Year</button>
-            </div>
-
-            <div class="income-comparison">
-                <span>
-                    Last Month Comparison:
-                    <b [ngStyle]="{'color': calculateMonthlyComparison() >= 0 ? 'green' : 'red'}">
-                        <mat-icon *ngIf="calculateMonthlyComparison() > 0">arrow_upward</mat-icon>
-                        <mat-icon *ngIf="calculateMonthlyComparison() < 0">arrow_downward</mat-icon>
-                        {{ calculateMonthlyComparison() }}%
-                    </b>
+            <h2>${{ totalExpenses.toFixed(2) }}</h2>
+            <div class="expenses-comparison">
+                <p>Income vs Expenses:</p>
+                Today:
+                <span style="color: green;">
+                    ${{ dailyIncomeExpenses.income.toFixed(2) }}
+                </span>
+                -
+                <span style="color: red;">
+                    ${{ dailyIncomeExpenses.expenses.toFixed(2) }}
                 </span>
                 <span style="margin-left: 20px;">
-                    Last Yearl Comparison:
-                    <b [ngStyle]="{'color': calculateYearlyComparison() >= 0 ? 'green' : 'red'}">
-                        <mat-icon *ngIf="calculateYearlyComparison() > 0">arrow_upward</mat-icon>
-                        <mat-icon *ngIf="calculateYearlyComparison() < 0">arrow_downward</mat-icon>
-                        {{ calculateYearlyComparison() }}%
-                    </b>
+                    This Month:
+                    <span style="color: green;">
+                        ${{ monthlyIncomeExpenses.income.toFixed(2) }}
+                    </span>
+                    -
+                    <span style="color: red;">
+                        ${{ monthlyIncomeExpenses.expenses.toFixed(2) }}
+                    </span>
+                </span>
+                <span style="margin-left: 20px;">
+                    This Year:
+                    <span style="color: green;">
+                        ${{ yearlyIncomeExpenses.income.toFixed(2) }}
+                    </span>
+                    -
+                    <span style="color: red;">
+                        ${{ yearlyIncomeExpenses.expenses.toFixed(2) }}
+                    </span>
                 </span>
             </div>
-        </mat-card-content>
-    </mat-card>
-
-    <!-- Add Income Transaction Form -->
-    <mat-card>
-        <mat-card-title>
-            <div class="card-header">
-                <span>Add Expenses Transaction</span>
-                <button mat-icon-button color="primary" (click)="toggleForm()">
-                    <mat-icon>{{ isFormVisible ? 'expand_less' : 'expand_more' }}</mat-icon>
-                </button>
+            <div *ngIf="dailyIncomeExpenses.income < dailyIncomeExpenses.expenses" style="color: red;">
+                <small>Note: Your expenses are greater than your income today.</small>
             </div>
-        </mat-card-title>
-        <mat-card-content>
-            <form *ngIf="isFormVisible">
-                <div class="row">
-                    <div class="col-md-4">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Amount</mat-label>
-                            <input matInput type="number" [(ngModel)]="newTransaction.amount" name="amount" required>
-                            <mat-error *ngIf="newTransaction.amount <= 0">Please enter a valid amount</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-4">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Date</mat-label>
-                            <input matInput type="date" [(ngModel)]="newTransaction.transactionDate"
-                                name="transactionDate" required>
-                            <mat-error *ngIf="!newTransaction.transactionDate">Please enter a valid date</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-4">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Category</mat-label>
-                            <mat-select [(ngModel)]="newTransaction.category" name="category" required>
-                                <mat-option value="Rent/Mortgage">Rent/Mortgage</mat-option>
-                                <mat-option value="Utilities">Utilities</mat-option>
-                                <mat-option value="Groceries">Groceries</mat-option>
-                                <mat-option value="Transportation">Transportation</mat-option>
-                                <mat-option value="Insurance">Insurance</mat-option>
-                                <mat-option value="Healthcare">Healthcare</mat-option>
-                                <mat-option value="Dining Out">Dining Out</mat-option>
-                                <mat-option value="Entertainment">Entertainment</mat-option>
-                                <mat-option value="Clothing">Clothing</mat-option>
-                                <mat-option value="Education">Education</mat-option>
-                                <mat-option value="Internet/Cable">Internet/Cable</mat-option>
-                                <mat-option value="Maintenance/Repairs">Maintenance/Repairs</mat-option>
-                                <mat-option value="Personal Care">Personal Care</mat-option>
-                                <mat-option value="Miscellaneous">Miscellaneous</mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="!newTransaction.category">Please select a category</mat-error>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <mat-form-field appearance="fill" class="w-100">
-                            <mat-label>Description</mat-label>
-                            <input matInput [(ngModel)]="newTransaction.description" name="description">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <button mat-raised-button color="primary" (click)="addTransaction()">Add Income</button>
-            </form>
+            <div *ngIf="monthlyIncomeExpenses.income < monthlyIncomeExpenses.expenses" style="color: red;">
+                <small>Note: Your expenses are greater than your income this month.</small>
+            </div>
+            <div *ngIf="yearlyIncomeExpenses.income < yearlyIncomeExpenses.expenses" style="color: red;">
+                <small>Note: Your expenses are greater than your income this year.</small>
+            </div>
         </mat-card-content>
     </mat-card>
 
-    <!-- Transaction List -->
+    <app-transaction-form [transactionType]="transactionType" [categories]="categories"></app-transaction-form>
     <app-transaction-list [transactions]="filteredTransactions"
         [transactionType]="transactionType"></app-transaction-list>
 </div>
