@@ -55,8 +55,6 @@ export class BudgetComponent implements OnInit {
     this.getTBudgets();
   }
 
-
-
   getTBudgets() {
     this.budgetService.getAllBudget().subscribe(
       response => {
@@ -67,8 +65,15 @@ export class BudgetComponent implements OnInit {
   }
 
   addBudget() {
-    if (this.newBudget.category && this.newBudget.amount > 0) {
-    }
+    this.budgetService.saveBudget(this.newBudget).subscribe(
+      (response) => {
+        console.log('Budget saved successfully:', response);
+        window.location.reload();
+      },
+      (error) => {
+        console.error('Error saving transaction:', error);
+      }
+    );
   }
 
   deleteBudget(index: number) {
