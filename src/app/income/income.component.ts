@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { TransactionService } from '../service/transaction.service';
 import { TransactionListComponent } from '../shared/component/transaction-list/transaction-list.component';
 import { TransactionFormComponent } from "../shared/component/transaction-form/transaction-form.component";
-import { TransactionReponse } from '../model/transaction-model';
+import { TransactionReponse } from '../model/transaction.model';
+import { income_categories } from '../model/constants';
 
 @Component({
   selector: 'app-income',
@@ -28,7 +29,7 @@ import { TransactionReponse } from '../model/transaction-model';
 })
 export class IncomeComponent implements OnInit {
 
-  categories: string[] = ['Salary', 'Business'];
+  categories: string[] = income_categories;
   incomeTransactions: TransactionReponse[] = [];
   filteredTransactions: TransactionReponse[] = [];
   totalIncome: number = 0;
@@ -82,7 +83,7 @@ export class IncomeComponent implements OnInit {
   }
 
   getTransactions() {
-    this.transactionService.getAllTransaction('INCOME').subscribe(
+    this.transactionService.getAllTransactionByType('INCOME').subscribe(
       response => {
         this.incomeTransactions = response;
         this.updateIncomeComparisons();

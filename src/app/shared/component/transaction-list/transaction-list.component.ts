@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { TransactionReponse } from '../../../model/transaction-model';
+import { TransactionReponse } from '../../../model/transaction.model';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TransactionService } from '../../../service/transaction.service';
@@ -56,9 +56,8 @@ export class TransactionListComponent implements OnInit, OnChanges {
   // Example years from the current year to a specific past year
   years: number[] = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i);
 
-  constructor(private transactionService: TransactionService) {
+  constructor(private transactionService: TransactionService) { }
 
-  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['transactions'] && changes['transactions'].currentValue) {
       this.filterTransactions();
@@ -81,7 +80,6 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
     this.updateTotalIncome();
   }
-
 
   deleteTransaction(index: number): void {
     const transactionToDelete = this.transactions[index];

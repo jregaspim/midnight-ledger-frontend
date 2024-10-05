@@ -11,10 +11,14 @@ export class TransactionService {
 
   constructor(private http: HttpClient) { }
 
-
-  getAllTransaction(transactionType: string): Observable<any> {
+  getAllTransactionByType(transactionType: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.get(this.apiUrl + "/" + transactionType, { headers });
+  }
+
+  getAllTransaction(): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get(this.apiUrl, { headers });
   }
 
   saveTransaction(transaction: any): Observable<any> {

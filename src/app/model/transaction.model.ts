@@ -12,4 +12,5 @@ export interface TransactionReponse {
     transactionDate: string;
     category: string;
     description: string;
+    transactionType: string;
 }

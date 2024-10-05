@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { TransactionRequest } from '../../../model/transaction-model';
+import { TransactionRequest } from '../../../model/transaction.model';
 import { TransactionService } from '../../../service/transaction.service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';

@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { TransactionService } from '../service/transaction.service';
 import { TransactionListComponent } from '../shared/component/transaction-list/transaction-list.component';
 import { TransactionFormComponent } from "../shared/component/transaction-form/transaction-form.component";
-import { TransactionReponse } from '../model/transaction-model';
+import { TransactionReponse } from '../model/transaction.model';
+import { expense_categories } from '../model/constants';
 
 @Component({
   selector: 'app-expenses',
@@ -28,19 +29,7 @@ import { TransactionReponse } from '../model/transaction-model';
 })
 export class ExpensesComponent implements OnInit {
 
-  categories: string[] = [
-    "Housing",
-    "Transportation",
-    "Food",
-    "Utilities",
-    "Insurance",
-    "Healthcare",
-    "Entertainment",
-    "Clothing",
-    "Education",
-    "Personal Care",
-    "Miscellaneous"
-  ];
+  categories: string[] = expense_categories
   expensesTransactions: TransactionReponse[] = [];
   incomeTransactions: TransactionReponse[] = [];
   filteredTransactions: TransactionReponse[] = [];
@@ -60,7 +49,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   getTransactions() {
-    this.transactionService.getAllTransaction('EXPENSES').subscribe(
+    this.transactionService.getAllTransactionByType('EXPENSES').subscribe(
       response => {
         this.expensesTransactions = response;
         this.dailyIncomeExpenses.expenses = this.getTotalTransaction(response, this.isToday);
@@ -73,7 +62,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   getIncomeTransactions() {
-    this.transactionService.getAllTransaction('INCOME').subscribe(
+    this.transactionService.getAllTransactionByType('INCOME').subscribe(
       response => {
         this.dailyIncomeExpenses.income = this.getTotalTransaction(response, this.isToday);
         this.monthlyIncomeExpenses.income = this.getTotalTransaction(response, this.isCurrentMonth);
