@@ -43,14 +43,11 @@ export class MonthlyIncomeSummaryComponent implements OnInit {
         (response: { [key: string]: string }) => {
           this.transactionMap = response;
 
-          const labels = Object.keys(response);
           const data = Object.values(response).map(amount => parseFloat(amount));
 
-          monthlyChartData.labels = labels;
+          monthlyChartData.labels = Object.keys(response);
           monthlyChartData.datasets[0].data = data
-          monthlyChartData.datasets[0].backgroundColor = generateColors(monthlyChartData.datasets[0].data.length);
-
-          console.log(monthlyChartData);
+          monthlyChartData.datasets[0].backgroundColor = generateColors(data.length);
 
           this.chart?.update();
 

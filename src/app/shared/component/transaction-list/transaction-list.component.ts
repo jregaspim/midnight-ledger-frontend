@@ -66,6 +66,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.filterTransactions();
+    this.updateDisplayedColumns();
     console.log(this.transactions);
   }
 
@@ -100,6 +101,14 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
   updateTotalIncome() {
     this.totalIncome = this.filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
+  }
+
+  updateDisplayedColumns(): void {
+    if (this.transactionType === 'Savings') {
+      this.displayedColumns = ['amount', 'date', 'category', 'description'];
+    } else {
+      this.displayedColumns = ['amount', 'date', 'category', 'description', 'actions'];
+    }
   }
 
 }

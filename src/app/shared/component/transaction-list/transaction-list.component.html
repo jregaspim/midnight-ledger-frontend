@@ -1,7 +1,7 @@
 <mat-card>
     <mat-card-title>{{transactionType}} Transactions</mat-card-title>
     <mat-card-content>
-        <div class="filter-controls">
+        <div class="filter-controls" *ngIf="transactionType != 'Savings'">
             <mat-form-field appearance="fill">
                 <mat-label>Select Month</mat-label>
                 <mat-select [(ngModel)]="selectedMonth" (selectionChange)="filterTransactions()">
@@ -43,7 +43,7 @@
                 <td mat-cell *matCellDef="let transaction">{{ transaction.description }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="actions">
+            <ng-container matColumnDef="actions" *ngIf="transactionType != 'Savings'">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let transaction; let i = index">
                     <button mat-button color="warn" (click)="deleteTransaction(i)">Delete</button>

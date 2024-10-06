@@ -31,6 +31,12 @@ export class TransactionService {
     return this.http.get(this.apiUrl, { headers });
   }
 
+
+  getGetTopTransaction(transactionType: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get(this.apiUrl + "/top/" + transactionType, { headers });
+  }
+
   saveTransaction(transaction: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(this.apiUrl, transaction, { headers });

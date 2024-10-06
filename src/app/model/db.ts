@@ -1,26 +1,5 @@
-// Sample data for the Monthly Expense Breakdown
-const monthlyExpenseData = {
-    "month": "September",
-    "totalExpenses": 3500,
-    "categories": [
-        { "name": "Rent", "amount": 1200 },
-        { "name": "Groceries", "amount": 600 },
-        { "name": "Utilities", "amount": 300 },
-        { "name": "Entertainment", "amount": 200 },
-        { "name": "Transportation", "amount": 250 },
-        { "name": "Dining Out", "amount": 450 },
-        { "name": "Healthcare", "amount": 150 },
-        { "name": "Miscellaneous", "amount": 350 }
-    ]
-}
+import { expense_categories } from "./constants";
 
-const monthlyIncomeData = {
-    "month": "September",
-    "categories": [
-        { "name": "Salary", "amount": 1200 },
-        { "name": "Business", "amount": 600 },
-    ]
-}
 
 export const monthlyChartData = {
     labels: [] as string[],
@@ -28,40 +7,6 @@ export const monthlyChartData = {
         label: 'Monthly Breakdown',
         data: [] as number[],
         backgroundColor: [] as string[],
-        hoverOffset: 4
-    }]
-};
-
-
-
-export const monthlyExpenseChartData = {
-    labels: [],
-    datasets: [{
-        label: 'Monthly Expenses Breakdown',
-        data: [],
-        backgroundColor: [
-            'rgb(255, 99, 132)', // Rent
-            'rgb(54, 162, 235)', // Groceries
-            'rgb(255, 205, 86)', // Utilities
-            'rgb(75, 192, 192)', // Entertainment
-            'rgb(153, 102, 255)', // Transportation
-            'rgb(255, 159, 64)',  // Dining Out
-            'rgb(201, 203, 207)', // Healthcare
-            'rgb(255, 206, 86)'   // Miscellaneous
-        ],
-        hoverOffset: 4
-    }]
-};
-
-export const monthlyIncomeChartData = {
-    labels: monthlyIncomeData.categories.map(category => category.name),
-    datasets: [{
-        label: 'Monthly Expenses Breakdown',
-        data: monthlyIncomeData.categories.map(category => category.amount),
-        backgroundColor: [
-            'rgb(255, 99, 132)', // Salary
-            'rgb(54, 162, 235)', // Business
-        ],
         hoverOffset: 4
     }]
 };
@@ -118,10 +63,10 @@ export const savingsProgressData = {
 };
 
 export const topSpendingCategories = {
-    labels: ['Groceries', 'Rent', 'Dining Out', 'Entertainment', 'Transportation'], // Categories
+    labels: expense_categories, // Categories
     datasets: [{
         label: 'Total Amount Spent ($)', // Dataset label
-        data: [1200, 950, 450, 300, 200], // Amounts corresponding to the categories
+        data: [] as number[], // Amounts corresponding to the categories
         backgroundColor: [
             'rgba(75, 192, 192, 0.2)',  // Groceries
             'rgba(54, 162, 235, 0.2)',  // Rent

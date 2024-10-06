@@ -11,6 +11,9 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { GoalService } from '../service/goal.service';
 import { FinancialGoalRequest, FinancialGoalReponse } from '../model/financial-goal.model';
 import { CommonModule } from '@angular/common';
+import { TransactionService } from '../service/transaction.service';
+import { TransactionReponse } from '../model/transaction.model';
+import { TransactionListComponent } from '../shared/component/transaction-list/transaction-list.component';
 
 @Component({
   selector: 'app-goals',
@@ -28,26 +31,42 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     CurrencyPipe,
     DatePipe,
-    CommonModule
+    CommonModule,
+    TransactionListComponent
   ]
 })
 export class GoalsComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'targetAmount', 'currentAmount', 'deadline', 'progress', 'actions'];
+  savingsTransactions: TransactionReponse[] = [];
   goals: FinancialGoalReponse[] = [];
   newGoal: FinancialGoalRequest = { goalName: '', targetAmount: 0, currentAmount: 0, deadline: new Date() };
   isEditing: boolean[] = [];
-  constructor(private financialGoalService: GoalService) { }
+  transactionType: string = 'Savings'
+
+
+  constructor(private financialGoalService: GoalService, private transactionService: TransactionService) { }
 
   ngOnInit(): void {
+    this.getFinancialGoal();
     this.getTransactions();
     this.isEditing = this.goals.map(() => false);
   }
 
-  getTransactions() {
+  getFinancialGoal() {
     this.financialGoalService.getAllFinancialGoal().subscribe(
       response => {
         this.goals = response;
+      },
+      error => console.error('Error fetching transactions:', error)
+    );
+  }
+
+  getTransactions() {
+    this.transactionService.getAllTransactionByType('SAVINGS').subscribe(
+      response => {
+        this.savingsTransactions = response;
+        console.log(this.savingsTransactions);
       },
       error => console.error('Error fetching transactions:', error)
     );
