@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { topSpendingCategories } from '../../../temp-db/db';
+import { topSpendingCategories } from '../../../model/db';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 
 Chart.register(...registerables)

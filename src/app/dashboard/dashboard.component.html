@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-12 mt-4">
+        <div class="col-md-12">
             <mat-card>
                 <mat-card-header>
                     <mat-card-title>Income vs Expenses</mat-card-title>
@@ -10,7 +10,8 @@
                 </mat-card-content>
             </mat-card>
         </div>
-        <div class="col-md-6 mt-4">
+
+        <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12 mt-4">
                     <mat-card>
@@ -22,6 +23,11 @@
                         </mat-card-content>
                     </mat-card>
                 </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row">
                 <div class="col-md-12 mt-4">
                     <mat-card>
                         <mat-card-header>
@@ -34,20 +40,35 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 mt-4">
+
+        <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12 mt-4">
                     <mat-card>
                         <mat-card-header>
-                            <mat-card-title>Monthly Expenses</mat-card-title>
+                            <mat-card-title>Monthly Income</mat-card-title>
                         </mat-card-header>
                         <mat-card-content>
-                            <app-monthly-summary></app-monthly-summary>
+                            <app-monthly-income-summary></app-monthly-income-summary>
                         </mat-card-content>
                     </mat-card>
                 </div>
             </div>
         </div>
 
+        <div class="col-md-6  mt-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>Monthly Expenses</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <app-monthly-expenses-summary></app-monthly-expenses-summary>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

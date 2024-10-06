@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { savingsProgressData } from '../../../temp-db/db';
+import { savingsProgressData } from '../../../model/db';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 
 Chart.register(...registerables)

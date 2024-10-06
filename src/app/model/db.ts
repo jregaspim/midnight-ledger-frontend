@@ -14,11 +14,31 @@ const monthlyExpenseData = {
     ]
 }
 
-export const transformedChartData = {
-    labels: monthlyExpenseData.categories.map(category => category.name),
+const monthlyIncomeData = {
+    "month": "September",
+    "categories": [
+        { "name": "Salary", "amount": 1200 },
+        { "name": "Business", "amount": 600 },
+    ]
+}
+
+export const monthlyChartData = {
+    labels: [] as string[],
+    datasets: [{
+        label: 'Monthly Breakdown',
+        data: [] as number[],
+        backgroundColor: [] as string[],
+        hoverOffset: 4
+    }]
+};
+
+
+
+export const monthlyExpenseChartData = {
+    labels: [],
     datasets: [{
         label: 'Monthly Expenses Breakdown',
-        data: monthlyExpenseData.categories.map(category => category.amount),
+        data: [],
         backgroundColor: [
             'rgb(255, 99, 132)', // Rent
             'rgb(54, 162, 235)', // Groceries
@@ -33,6 +53,18 @@ export const transformedChartData = {
     }]
 };
 
+export const monthlyIncomeChartData = {
+    labels: monthlyIncomeData.categories.map(category => category.name),
+    datasets: [{
+        label: 'Monthly Expenses Breakdown',
+        data: monthlyIncomeData.categories.map(category => category.amount),
+        backgroundColor: [
+            'rgb(255, 99, 132)', // Salary
+            'rgb(54, 162, 235)', // Business
+        ],
+        hoverOffset: 4
+    }]
+};
 
 export const incomeVsExpensesData = {
     labels: [
@@ -43,14 +75,14 @@ export const incomeVsExpensesData = {
     datasets: [
         {
             label: 'Monthly Income',
-            data: [4000, 4500, 5000, 4800, 5200, 5500, 6000, 6200, 5800, 6000, 6200, 6400], // Income values
+            data: [], // Income values
             backgroundColor: 'rgba(75, 192, 192, 0.6)', // Light teal color for income
             borderColor: 'rgba(75, 192, 192, 1)', // Darker teal for border
             borderWidth: 1
         },
         {
             label: 'Total Expenses',
-            data: [3500, 3700, 4000, 3800, 4200, 4500, 4900, 5000, 4800, 5100, 5300, 5500], // Expenses values
+            data: [], // Expenses values
             backgroundColor: 'rgba(255, 99, 132, 0.6)', // Light red color for expenses
             borderColor: 'rgba(255, 99, 132, 1)', // Darker red for border
             borderWidth: 1
@@ -108,4 +140,22 @@ export const topSpendingCategories = {
     }]
 };
 
+
+export const generateColors = (length: number) => {
+    const colors = [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(153, 102, 255)',
+        'rgb(255, 159, 64)',
+        'rgb(201, 203, 207)',
+        'rgb(255, 206, 86)',
+        'rgb(255, 99, 71)',
+        'rgb(60, 179, 113)',
+        'rgb(255, 215, 0)',
+    ];
+
+    return colors.slice(0, length);
+};
 

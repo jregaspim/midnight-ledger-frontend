@@ -52,7 +52,6 @@ export class TransactionFormComponent implements OnInit {
   }
 
   addTransaction() {
-    console.log(this.newTransaction);
     this.transactionService.saveTransaction(this.newTransaction).subscribe(
       (response) => {
         console.log('Transaction saved successfully:', response);
