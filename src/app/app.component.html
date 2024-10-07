@@ -4,7 +4,7 @@
 
   <!-- Flexbox for sidenav and content -->
   <div class="main-content">
-    <app-sidenav></app-sidenav>
+    <app-sidenav *ngIf="isAuthenticated()"></app-sidenav>
     <div class="content">
       <router-outlet></router-outlet>
     </div>

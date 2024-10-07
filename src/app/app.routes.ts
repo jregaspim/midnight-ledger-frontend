@@ -8,6 +8,8 @@ import { GoalsComponent } from './goals/goals.component';
 import { ReportsComponent } from './reports/reports.component';
 import { RecurringTransactionComponent } from './recurring-transaction/recurring-transaction.component';
 import { SettingsComponent } from './settings/settings.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -19,6 +21,8 @@ export const routes: Routes = [
     { path: 'recurring', component: RecurringTransactionComponent },
     { path: 'settings', component: SettingsComponent },
     { path: 'profile', component: ProfileComponent },
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: '**', redirectTo: '/dashboard' }
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' }
 ];

@@ -50,7 +50,7 @@ export class TopSpendingCategoriesComponent implements OnInit {
   }
 
   loadBudgetData(): void {
-    this.transactionService.getGetTopTransaction("EXPENSES").subscribe(
+    this.transactionService.getTopTransaction("EXPENSES").subscribe(
       (response) => {
         this.spendingData = response;
         const labels = Object.keys(response);
