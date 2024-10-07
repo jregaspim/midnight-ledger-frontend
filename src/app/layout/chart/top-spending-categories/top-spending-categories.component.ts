@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { generateColors, monthlyChartData, topSpendingCategories } from '../../../model/db';
+import { generateColors, topSpendingCategories } from '../../../model/db';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { TransactionService } from '../../../service/transaction.service';
 

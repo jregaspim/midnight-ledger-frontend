@@ -8,7 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { GoalService } from '../service/goal.service';
+import { FinancialGoalService } from '../service/financial-goal.service';
 import { FinancialGoalRequest, FinancialGoalReponse } from '../model/financial-goal.model';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../service/transaction.service';
@@ -45,7 +45,7 @@ export class GoalsComponent implements OnInit {
   transactionType: string = 'Savings'
 
 
-  constructor(private financialGoalService: GoalService, private transactionService: TransactionService) { }
+  constructor(private financialGoalService: FinancialGoalService, private transactionService: TransactionService) { }
 
   ngOnInit(): void {
     this.getFinancialGoal();

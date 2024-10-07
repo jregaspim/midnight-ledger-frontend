@@ -52,10 +52,10 @@ export class BudgetComponent implements OnInit {
   constructor(private budgetService: BudgetService) { }
 
   ngOnInit(): void {
-    this.getTBudgets();
+    this.getALlBudgets();
   }
 
-  getTBudgets() {
+  getALlBudgets() {
     this.budgetService.getAllBudget().subscribe(
       response => {
         this.budgets = response;

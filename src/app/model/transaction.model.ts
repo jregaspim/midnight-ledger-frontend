@@ -14,3 +14,9 @@ export interface TransactionReponse {
     description: string;
     transactionType: string;
 }
+
+export interface MonthlyData {
+    EXPENSES: [];
+    INCOME: [];
+    SAVINGS: []
+}

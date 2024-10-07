@@ -11,37 +11,53 @@
             </mat-card>
         </div>
 
-        <div class="col-md-6">
+        <div class="container mt-4">
             <div class="row">
-                <div class="col-md-12 mt-4">
-                    <mat-card>
+                <!-- First Column: Budget vs Spending -->
+                <div class="col-md-6 d-flex flex-column">
+                    <mat-card class="mb-4 h-100">
                         <mat-card-header>
-                            <mat-card-title>Saving Progress</mat-card-title>
+                            <mat-card-title>Budget vs Spending</mat-card-title>
                         </mat-card-header>
                         <mat-card-content>
-                            <app-saving-progress></app-saving-progress>
+                            <app-budget-vs-spending></app-budget-vs-spending>
                         </mat-card-content>
                     </mat-card>
+                </div>
+
+                <!-- Second Column: Two Smaller Charts -->
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-card class="mb-4" style="height: 94%;">
+                                <mat-card-header>
+                                    <mat-card-title>Saving Progress</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <app-saving-progress></app-saving-progress>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div class="col-md-12">
+                            <mat-card class="mb-4" style="height: 94%;">
+                                <mat-card-header>
+                                    <mat-card-title>Top Spending Categories</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <app-top-spending-categories></app-top-spending-categories>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-12 mt-4">
-                    <mat-card>
-                        <mat-card-header>
-                            <mat-card-title>Top Spending Categories</mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <app-top-spending-categories></app-top-spending-categories>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-md-6">
+
+
+
+        <!-- <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12 mt-4">
                     <mat-card>
@@ -69,6 +85,6 @@
                     </mat-card>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>

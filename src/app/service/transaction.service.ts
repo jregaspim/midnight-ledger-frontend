@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TransactionReponse } from '../model/transaction.model';
+import { MonthlyData, TransactionReponse } from '../model/transaction.model';
 
-interface MonthlyData {
-  EXPENSES: [];
-  INCOME: [];
-}
+
 @Injectable({
   providedIn: 'root'
 })

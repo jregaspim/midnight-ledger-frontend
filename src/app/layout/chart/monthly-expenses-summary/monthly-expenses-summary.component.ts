@@ -53,8 +53,6 @@ export class MonthlyExpensesSummaryComponent implements OnInit {
           monthlyChartData.datasets[0].data = data
           monthlyChartData.datasets[0].backgroundColor = generateColors(monthlyChartData.datasets[0].data.length);
 
-          console.log(monthlyChartData);
-
           this.chart?.update();
 
         },

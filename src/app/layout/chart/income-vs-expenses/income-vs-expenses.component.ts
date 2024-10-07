@@ -13,7 +13,7 @@ Chart.register(...registerables)
   templateUrl: './income-vs-expenses.component.html',
   styleUrl: './income-vs-expenses.component.scss'
 })
-export class IncomeVsExpensesComponent implements OnInit, OnChanges {
+export class IncomeVsExpensesComponent implements OnInit {
 
 
   public config: ChartConfiguration<'bar'> = {
@@ -43,15 +43,9 @@ export class IncomeVsExpensesComponent implements OnInit, OnChanges {
 
   monthlyIncome = [];
   monthlyExpenses = [];
+  monthlySavings = [];
 
   constructor(private transactionService: TransactionService) { }
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['monthlyIncome'] && changes['monthlyExpenses']) {
-      this.fetchYearlyMonthlyData();
-    }
-  }
 
   ngOnInit(): void {
     this.fetchYearlyMonthlyData();
@@ -62,11 +56,16 @@ export class IncomeVsExpensesComponent implements OnInit, OnChanges {
   fetchYearlyMonthlyData(): void {
     this.transactionService.getYearlyData('2024').subscribe(
       (data) => {
+        console.log(data);
         this.monthlyIncome = data.INCOME;
         this.monthlyExpenses = data.EXPENSES;
+        this.monthlySavings = data.SAVINGS;
 
         incomeVsExpensesData.datasets[0].data = this.monthlyIncome
         incomeVsExpensesData.datasets[1].data = this.monthlyExpenses
+        incomeVsExpensesData.datasets[2].data = this.monthlySavings
+
+        this.chart?.update();
 
       },
       (error) => {
