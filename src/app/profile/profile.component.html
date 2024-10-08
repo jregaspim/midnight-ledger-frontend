@@ -1,22 +1,18 @@
 <div class="profile-container">
-    <!-- Profile Information Section -->
     <mat-card class="profile-card">
         <mat-card-title>Profile Information</mat-card-title>
         <mat-card-content>
             <form>
-                <!-- Name Input -->
                 <mat-form-field class="full-width">
                     <mat-label>Name</mat-label>
                     <input matInput [(ngModel)]="user.name" name="name" placeholder="Enter your name">
                 </mat-form-field>
 
-                <!-- Email Input -->
                 <mat-form-field class="full-width">
                     <mat-label>Email</mat-label>
                     <input matInput [(ngModel)]="user.email" name="email" placeholder="Enter your email">
                 </mat-form-field>
 
-                <!-- Phone Input -->
                 <mat-form-field class="full-width">
                     <mat-label>Phone</mat-label>
                     <input matInput [(ngModel)]="user.phone" name="phone" placeholder="Enter your phone number">
@@ -27,12 +23,10 @@
         </mat-card-content>
     </mat-card>
 
-    <!-- Change Password Section -->
     <mat-card class="profile-card">
         <mat-card-title>Change Password</mat-card-title>
         <mat-card-content>
             <form>
-                <!-- Password Input -->
                 <mat-form-field class="full-width">
                     <mat-label>New Password</mat-label>
                     <input matInput type="password" [(ngModel)]="user.password" name="password"

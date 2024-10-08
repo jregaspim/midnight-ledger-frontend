@@ -12,6 +12,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { authGuard } from './auth.guard';
 import { guestGuard } from './guest-guard.guard';
+import { DebtComponent } from './debt/debt.component';
 
 export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
@@ -22,7 +23,8 @@ export const routes: Routes = [
     { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },
     { path: 'recurring', component: RecurringTransactionComponent, canActivate: [authGuard] },
     { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
-    { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+    { path: 'debt', component: DebtComponent, canActivate: [authGuard] },
+    // { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
     { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [guestGuard] },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
