@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../service/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,14 +16,14 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   isAuthenticated(): any {
     return localStorage.getItem('token') !== null;
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 

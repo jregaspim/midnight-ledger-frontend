@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
-import { generateColors, monthlyChartData } from '../../../model/db';
+import { generateColors, monthlyChartData } from '../../../model/dashboard.model';
 import { TransactionService } from '../../../service/transaction.service';
 
 Chart.register(...registerables)

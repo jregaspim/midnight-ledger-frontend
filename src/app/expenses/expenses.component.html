@@ -2,35 +2,35 @@
     <mat-card>
         <mat-card-title>Your Expenses</mat-card-title>
         <mat-card-content class="text-center">
-            <h2>${{ totalExpenses.toFixed(2) }}</h2>
+            <h2>{{userSettings.currency}}{{ totalExpenses.toFixed(2) }}</h2>
             <div class="expenses-comparison">
                 <p>Income vs Expenses:</p>
                 Today:
                 <span style="color: green;">
-                    ${{ dailyIncomeExpenses.income.toFixed(2) }}
+                    {{userSettings.currency}}{{ dailyIncomeExpenses.income.toFixed(2) }}
                 </span>
                 -
                 <span style="color: red;">
-                    ${{ dailyIncomeExpenses.expenses.toFixed(2) }}
+                    {{userSettings.currency}}{{ dailyIncomeExpenses.expenses.toFixed(2) }}
                 </span>
                 <span style="margin-left: 20px;">
                     This Month:
                     <span style="color: green;">
-                        ${{ monthlyIncomeExpenses.income.toFixed(2) }}
+                        {{userSettings.currency}}{{ monthlyIncomeExpenses.income.toFixed(2) }}
                     </span>
                     -
                     <span style="color: red;">
-                        ${{ monthlyIncomeExpenses.expenses.toFixed(2) }}
+                        {{userSettings.currency}}{{ monthlyIncomeExpenses.expenses.toFixed(2) }}
                     </span>
                 </span>
                 <span style="margin-left: 20px;">
                     This Year:
                     <span style="color: green;">
-                        ${{ yearlyIncomeExpenses.income.toFixed(2) }}
+                        {{userSettings.currency}}{{ yearlyIncomeExpenses.income.toFixed(2) }}
                     </span>
                     -
                     <span style="color: red;">
-                        ${{ yearlyIncomeExpenses.expenses.toFixed(2) }}
+                        {{userSettings.currency}}{{ yearlyIncomeExpenses.expenses.toFixed(2) }}
                     </span>
                 </span>
             </div>

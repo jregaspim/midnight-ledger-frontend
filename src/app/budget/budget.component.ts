@@ -67,7 +67,6 @@ export class BudgetComponent implements OnInit {
   addBudget() {
     this.budgetService.saveBudget(this.newBudget).subscribe(
       (response) => {
-        console.log('Budget saved successfully:', response);
         window.location.reload();
       },
       (error) => {

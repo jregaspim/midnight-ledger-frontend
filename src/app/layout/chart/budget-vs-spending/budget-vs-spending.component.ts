@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
-import { radarChartData } from '../../../model/db';
+import { radarChartData } from '../../../model/dashboard.model';
 import { BudgetService } from '../../../service/budget.service';
 import { BudgetReponse } from '../../../model/budget.model';
 
@@ -61,8 +61,6 @@ export class BudgetVsSpendingComponent implements OnInit {
         radarChartData.labels = this.budgets.map(budget => budget.category);
         radarChartData.datasets[0].data = this.budgets.map(budget => budget.amountUsed);
         radarChartData.datasets[1].data = this.budgets.map(budget => budget.amount);
-
-        console.log(this.budgets)
 
         this.chart?.update();
       },

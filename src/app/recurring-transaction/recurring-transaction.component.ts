@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class RecurringTransactionComponent implements OnInit {
-
+  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   categories: string[] = expense_categories;
   frequencies: string[] = recurrence_type;
 
@@ -53,10 +53,8 @@ export class RecurringTransactionComponent implements OnInit {
   }
 
   addRecurringTransaction() {
-    console.log(this.newRecurringTransaction);
     this.recurringTransactionService.saveRecurringTransaction(this.newRecurringTransaction).subscribe(
       (response) => {
-        console.log('Recurring Transaction saved successfully:', response);
         window.location.reload();
       },
       (error) => {

@@ -1,15 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* styles.scss */
+:root {
+    --primary-color: #007bff;
+    --background-color: #ffffff;
+    --text-color: #000000;
+}
+
+.dark-theme {
+    --primary-color: #1e1e1e;
+    --background-color: #121212;
+    --text-color: #ffffff;
+}
+
+/* Apply variables */
+
+
 html,
 body {
     height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
+button,
+input,
+select,
+.mat-card {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
 
 mat-card {
     padding: 20px;

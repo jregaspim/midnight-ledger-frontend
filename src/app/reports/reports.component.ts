@@ -22,7 +22,7 @@ import { TransactionReponse } from '../model/transaction.model';
   ]
 })
 export class ReportsComponent implements OnInit {
-
+  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   transactions: TransactionReponse[] = [];
 
   constructor(private transactionService: TransactionService) { }
@@ -35,7 +35,6 @@ export class ReportsComponent implements OnInit {
   getTransactions() {
     this.transactionService.getAllTransaction().subscribe(
       response => {
-        console.log(response);
         this.transactions = response;
       },
       error => console.error('Error fetching transactions:', error)

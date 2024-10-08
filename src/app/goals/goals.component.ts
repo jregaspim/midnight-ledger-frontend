@@ -66,7 +66,6 @@ export class GoalsComponent implements OnInit {
     this.transactionService.getAllTransactionByType('SAVINGS').subscribe(
       response => {
         this.savingsTransactions = response;
-        console.log(this.savingsTransactions);
       },
       error => console.error('Error fetching transactions:', error)
     );
@@ -75,7 +74,6 @@ export class GoalsComponent implements OnInit {
   addGoal() {
     this.financialGoalService.saveFinancialGoal(this.newGoal).subscribe(
       (response) => {
-        console.log('Financial Goal saved successfully:', response);
         window.location.reload();
       },
       (error) => {
@@ -108,8 +106,7 @@ export class GoalsComponent implements OnInit {
     this.financialGoalService.updateCurrentAmount(goal.id, goal.currentAmount)
       .subscribe(
         (response) => {
-          console.log('Goal updated successfully:', response);
-          this.isEditing[index] = false; // Exit editing mode after successful save
+          this.isEditing[index] = false;
         },
         (error) => {
           console.error('Error updating goal:', error);

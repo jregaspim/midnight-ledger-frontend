@@ -28,7 +28,7 @@ import { expense_categories } from '../model/constants';
   ]
 })
 export class ExpensesComponent implements OnInit {
-
+  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   categories: string[] = expense_categories
   expensesTransactions: TransactionReponse[] = [];
   incomeTransactions: TransactionReponse[] = [];
@@ -99,7 +99,6 @@ export class ExpensesComponent implements OnInit {
   }
 
   filterExpenses(period: string) {
-    console.log(period)
     this.selectedFilter = period;
     const now = new Date();
     this.filteredTransactions = this.expensesTransactions.filter(transaction => {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { colors, ChartData } from '../../../model/db';
+import { colors, ChartData, noDataPlugin } from '../../../model/dashboard.model';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { FinancialGoalReponse, SavingProgress, SavingProgressResponse } from '../../../model/financial-goal.model';
 import { FinancialGoalService } from '../../../service/financial-goal.service';
@@ -25,6 +25,8 @@ export class SavingProgressComponent implements OnInit {
     datasets: []
   };
 
+
+
   public config: ChartConfiguration<'line'> = {
     type: 'line',
     data: this.savingsProgressData,
@@ -35,8 +37,11 @@ export class SavingProgressComponent implements OnInit {
           display: true,
         }
       }
-    }
+    },
+    plugins: [noDataPlugin]
   };
+
+
 
   chart: Chart<'line'> | undefined;
 

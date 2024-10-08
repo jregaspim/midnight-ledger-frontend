@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { incomeVsExpensesData } from '../../../model/db';
+import { incomeVsExpensesData } from '../../../model/dashboard.model';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { TransactionService } from '../../../service/transaction.service';
 import { TransactionReponse } from '../../../model/transaction.model';
@@ -7,15 +7,15 @@ import { TransactionReponse } from '../../../model/transaction.model';
 Chart.register(...registerables)
 
 @Component({
-  selector: 'app-income-vs-expenses',
+  selector: 'app-transaction-monthly',
   standalone: true,
   imports: [],
-  templateUrl: './income-vs-expenses.component.html',
-  styleUrl: './income-vs-expenses.component.scss'
+  templateUrl: './transaction-monthly.component.html',
+  styleUrl: './transaction-monthly.component.scss'
 })
-export class IncomeVsExpensesComponent implements OnInit {
+export class TransactionMonthlyComponent implements OnInit {
 
-
+  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   public config: ChartConfiguration<'bar'> = {
     type: 'bar',
     data: incomeVsExpensesData,
@@ -26,7 +26,7 @@ export class IncomeVsExpensesComponent implements OnInit {
           beginAtZero: true,
           title: {
             display: true,
-            text: 'Amount ($)'
+            text: `Amount (${this.userSettings.currency})`
           }
         },
         x: {
@@ -56,7 +56,6 @@ export class IncomeVsExpensesComponent implements OnInit {
   fetchYearlyMonthlyData(): void {
     this.transactionService.getYearlyData('2024').subscribe(
       (data) => {
-        console.log(data);
         this.monthlyIncome = data.INCOME;
         this.monthlyExpenses = data.EXPENSES;
         this.monthlySavings = data.SAVINGS;

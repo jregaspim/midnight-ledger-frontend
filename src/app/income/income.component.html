@@ -2,7 +2,7 @@
     <mat-card>
         <mat-card-title>Your Income</mat-card-title>
         <mat-card-content class="text-center">
-            <h2>${{ totalIncome.toFixed(2) }}</h2>
+            <h2>{{userSettings.currency}}{{ totalIncome.toFixed(2) }}</h2>
 
             <p>Select a filter period:</p>
             <div class="btn-group" role="group" aria-label="Filter options">

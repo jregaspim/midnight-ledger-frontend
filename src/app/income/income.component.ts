@@ -29,6 +29,7 @@ import { income_categories } from '../model/constants';
 })
 export class IncomeComponent implements OnInit {
 
+  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   categories: string[] = income_categories;
   incomeTransactions: TransactionReponse[] = [];
   filteredTransactions: TransactionReponse[] = [];

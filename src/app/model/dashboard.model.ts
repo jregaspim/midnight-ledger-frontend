@@ -1,3 +1,4 @@
+import { Chart } from "chart.js";
 import { expense_categories } from "./constants";
 
 
@@ -51,25 +52,12 @@ export const incomeVsExpensesData = {
 };
 
 export const topSpendingCategories = {
-    labels: expense_categories, // Categories
+    labels: expense_categories,
     datasets: [{
-        label: 'Total Amount Spent ($)', // Dataset label
-        data: [] as number[], // Amounts corresponding to the categories
-        backgroundColor: [
-            'rgba(75, 192, 192, 0.2)',  // Groceries
-            'rgba(54, 162, 235, 0.2)',  // Rent
-            'rgba(255, 206, 86, 0.2)',  // Dining Out
-            'rgba(153, 102, 255, 0.2)', // Entertainment
-            'rgba(255, 159, 64, 0.2)'   // Transportation
-        ],
-        borderColor: [
-            'rgba(75, 192, 192, 1)',    // Groceries
-            'rgba(54, 162, 235, 1)',    // Rent
-            'rgba(255, 206, 86, 1)',    // Dining Out
-            'rgba(153, 102, 255, 1)',   // Entertainment
-            'rgba(255, 159, 64, 1)'     // Transportation
-        ],
-        borderWidth: 1 // Border thickness
+        label: 'Total Amount Spent ($)',
+        data: [] as number[],
+        backgroundColor: [] as string[],
+        borderWidth: 1
     }]
 };
 
@@ -103,6 +91,27 @@ export const radarChartData = {
             pointHoverRadius: 7
         }
     ]
+};
+
+export const noDataPlugin = {
+    id: 'noDataPlugin',
+    beforeDraw: (chart: Chart) => {
+        const { datasets } = chart.data;
+        if (datasets.length === 0 || datasets.every(dataset => dataset.data.length === 0)) {
+            // Get the chart context and its dimensions
+            const ctx = chart.ctx;
+            const { width, height } = chart;
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#999';
+
+            ctx.fillText('No data available to display', width / 2, height / 2);
+            ctx.restore();
+        }
+    }
 };
 
 

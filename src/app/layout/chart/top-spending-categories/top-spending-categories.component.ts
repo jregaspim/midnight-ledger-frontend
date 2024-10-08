@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { generateColors, topSpendingCategories } from '../../../model/db';
+import { generateColors, topSpendingCategories } from '../../../model/dashboard.model';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { TransactionService } from '../../../service/transaction.service';
 
@@ -14,6 +14,7 @@ Chart.register(...registerables)
 })
 export class TopSpendingCategoriesComponent implements OnInit {
 
+  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   spendingData: any = {};
   totalAmount: number = 0;
 
@@ -27,13 +28,13 @@ export class TopSpendingCategoriesComponent implements OnInit {
           beginAtZero: true,
           title: {
             display: true,
-            text: 'Amount ($)'
+            text: `Amount (${this.userSettings.currency})`
           }
         },
         x: {
           title: {
             display: true,
-            text: 'Months'
+            text: 'Categories'
           }
         }
       }

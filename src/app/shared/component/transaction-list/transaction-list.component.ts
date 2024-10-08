@@ -31,6 +31,8 @@ export class TransactionListComponent implements OnInit, OnChanges {
   @Input() transactions: TransactionReponse[] = [];
   @Input() transactionType: string = '';
 
+  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
+
   filteredTransactions: TransactionReponse[] = [];
 
   displayedColumns: string[] = ['amount', 'date', 'category', 'description', 'actions'];
@@ -67,9 +69,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.filterTransactions();
     this.updateDisplayedColumns();
-    console.log(this.transactions);
   }
-
 
   filterTransactions() {
     this.filteredTransactions = this.transactions.filter(transaction => {

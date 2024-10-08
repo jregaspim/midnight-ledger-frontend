@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../service/authentication.service';
+import { User, Role } from '../../model/user.model';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,17 @@ import { AuthService } from '../../service/authentication.service';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  currentUser: User = {
+    id: 0,
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    role: Role.ADMIN
+  }
+
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private userService: UserService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
@@ -26,17 +38,23 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    console.log("Loging.....: ", this.loginForm);
-
     this.authService.authenticate(this.loginForm.value).subscribe(response => {
-      console.log(response);
       localStorage.setItem('isLoggedIn', "true");
       localStorage.setItem('token', response.token);
+      this.getCurrentUser(response.token);
       this.router.navigate(['/dashboard']);
     }, error => {
       console.error('Login error:', error);
     });
+  }
 
-
+  getCurrentUser(token: string) {
+    this.userService.getCurrentUser(token).subscribe(
+      response => {
+        this.currentUser = response;
+        localStorage.setItem('user', JSON.stringify(this.currentUser));
+      },
+      error => console.error('Error fetching current user:', error)
+    );
   }
 }
