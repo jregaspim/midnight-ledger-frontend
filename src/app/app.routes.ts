@@ -10,19 +10,21 @@ import { RecurringTransactionComponent } from './recurring-transaction/recurring
 import { SettingsComponent } from './settings/settings.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { authGuard } from './auth.guard';
+import { guestGuard } from './guest-guard.guard';
 
 export const routes: Routes = [
-    { path: 'dashboard', component: DashboardComponent },
-    { path: 'income', component: IncomeComponent },
-    { path: 'expenses', component: ExpensesComponent },
-    { path: 'budget', component: BudgetComponent },
-    { path: 'goals', component: GoalsComponent },
-    { path: 'reports', component: ReportsComponent },
-    { path: 'recurring', component: RecurringTransactionComponent },
-    { path: 'settings', component: SettingsComponent },
-    { path: 'profile', component: ProfileComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+    { path: 'income', component: IncomeComponent, canActivate: [authGuard] },
+    { path: 'expenses', component: ExpensesComponent, canActivate: [authGuard] },
+    { path: 'budget', component: BudgetComponent, canActivate: [authGuard] },
+    { path: 'goals', component: GoalsComponent, canActivate: [authGuard] },
+    { path: 'reports', component: ReportsComponent, canActivate: [authGuard] },
+    { path: 'recurring', component: RecurringTransactionComponent, canActivate: [authGuard] },
+    { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
+    { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+    { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+    { path: 'register', component: RegisterComponent, canActivate: [guestGuard] },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' }
 ];

@@ -30,6 +30,7 @@ export class LoginComponent {
 
     this.authService.authenticate(this.loginForm.value).subscribe(response => {
       console.log(response);
+      localStorage.setItem('isLoggedIn', "true");
       localStorage.setItem('token', response.token);
       this.router.navigate(['/dashboard']);
     }, error => {

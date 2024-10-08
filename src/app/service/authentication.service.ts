@@ -19,4 +19,10 @@ export class AuthService {
   authenticate(request: AuthenticationRequest): Observable<AuthenticationResponse> {
     return this.http.post<AuthenticationResponse>(`${this.apiUrl}/authenticate`, request);
   }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    return token !== null; // Replace with actual token validation logic if needed
+  }
+
 }
