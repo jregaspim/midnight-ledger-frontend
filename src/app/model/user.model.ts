@@ -1,7 +1,7 @@
+// Enum for User Roles
 export enum Role {
     ADMIN = 'ADMIN',
     USER = 'USER',
-    // Add other roles as needed
 }
 
 export interface User {
@@ -13,8 +13,7 @@ export interface User {
     role: Role;
 }
 
-
 export interface UserSettings {
-    notificationPreferences: boolean,
+    notificationPreferences: boolean;
     currency: string;
-};
+}

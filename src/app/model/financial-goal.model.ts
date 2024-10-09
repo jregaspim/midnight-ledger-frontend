@@ -5,7 +5,7 @@ export interface FinancialGoalRequest {
     deadline: Date;
 }
 
-export interface FinancialGoalReponse {
+export interface FinancialGoalResponse {
     id: number;
     goalName: string;
     targetAmount: number;
@@ -15,12 +15,14 @@ export interface FinancialGoalReponse {
 }
 
 export interface SavingProgress {
-    id: number;              // corresponds to Long id
-    dateAdded: string;       // corresponds to LocalDate dateAdded (use ISO string format)
-    amount: number;          // corresponds to BigDecimal amount
-    financialGoalId: number; // You can include this to reference the FinancialGoal
+    id: number;
+    dateAdded: string;
+    amount: number;
+    financialGoalId: number;
 }
 
 export interface SavingProgressResponse {
-    [financialGoalName: string]: { [monthYear: string]: number }
+    [goalName: string]: {
+        [monthYear: string]: number;
+    };
 }

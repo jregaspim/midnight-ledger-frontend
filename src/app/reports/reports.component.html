@@ -5,10 +5,13 @@
     </mat-card-header>
 
     <mat-card-content>
+        <div *ngIf="errorMessage" style="color: red;">
+            {{ errorMessage }}
+        </div>
         <div>
-            <h3>Total Income: {{ getTotalIncome() | currency }}</h3>
-            <h3>Total Expenses: {{ getTotalExpenses() | currency }}</h3>
-            <h3>Net Savings: {{ getNetSavings() | currency }}</h3>
+            <h3>Total Income: {{ totalIncome | currency }}</h3>
+            <h3>Total Expenses: {{ totalExpenses | currency }}</h3>
+            <h3>Net Savings: {{ netSavings | currency }}</h3>
         </div>
 
         <table mat-table [dataSource]="transactions">
@@ -24,8 +27,8 @@
 
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef>Amount</th>
-                <td mat-cell *matCellDef="let transaction">{{userSettings.currency}}{{ transaction.amount.toFixed(2) }}
-                </td>
+                <td mat-cell *matCellDef="let transaction">{{ userSettings.currency }}{{ transaction.amount.toFixed(2)
+                    }}</td>
             </ng-container>
 
             <ng-container matColumnDef="type">

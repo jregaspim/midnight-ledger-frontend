@@ -6,7 +6,6 @@
 
     <mat-card-content>
         <form (ngSubmit)="addRecurringTransaction()">
-
             <div class="row">
                 <div class="col-md-3">
                     <mat-form-field class="w-100">
@@ -18,19 +17,18 @@
                     <mat-form-field class="w-100">
                         <mat-label>Category</mat-label>
                         <mat-select [(ngModel)]="newRecurringTransaction.category" name="category" required>
-                            <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+                            <mat-option *ngFor="let category of categories" [value]="category">{{ category
+                                }}</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="!newRecurringTransaction.category">Please select a category</mat-error>
                     </mat-form-field>
                 </div>
                 <div class="col-md-3">
                     <mat-form-field class="w-100">
                         <mat-label>Frequency</mat-label>
                         <mat-select [(ngModel)]="newRecurringTransaction.recurrenceType" name="frequency" required>
-                            <mat-option *ngFor="let frequency of frequencies"
-                                [value]="frequency">{{frequency}}</mat-option>
+                            <mat-option *ngFor="let frequency of frequencies" [value]="frequency">{{ frequency
+                                }}</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="!newRecurringTransaction.recurrenceType">Please select a frequency</mat-error>
                     </mat-form-field>
                 </div>
                 <div class="col-md-3">
@@ -42,14 +40,13 @@
             </div>
 
             <button mat-raised-button color="primary" type="submit">Add Recurring Transaction</button>
-
         </form>
 
         <table mat-table [dataSource]="recurringTransactions" class="mat-elevation-z8" style="margin-top: 20px;">
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef>Amount</th>
-                <td mat-cell *matCellDef="let transaction">{{userSettings.currency}}{{ transaction.amount.toFixed(2)}}
-                </td>
+                <td mat-cell *matCellDef="let transaction">{{ userSettings.currency }}{{ transaction.amount.toFixed(2)
+                    }}</td>
             </ng-container>
 
             <ng-container matColumnDef="category">

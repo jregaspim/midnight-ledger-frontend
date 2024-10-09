@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { TransactionReponse } from '../../../model/transaction.model';
+import { TransactionResponse } from '../../../model/transaction.model';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TransactionService } from '../../../service/transaction.service';
@@ -28,12 +28,12 @@ import { FormsModule } from '@angular/forms';
 })
 export class TransactionListComponent implements OnInit, OnChanges {
 
-  @Input() transactions: TransactionReponse[] = [];
+  @Input() transactions: TransactionResponse[] = [];
   @Input() transactionType: string = '';
 
   userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
 
-  filteredTransactions: TransactionReponse[] = [];
+  filteredTransactions: TransactionResponse[] = [];
 
   displayedColumns: string[] = ['amount', 'date', 'category', 'description', 'actions'];
   totalIncome: number = 0;

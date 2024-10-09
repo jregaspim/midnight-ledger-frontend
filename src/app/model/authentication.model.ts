@@ -1,15 +1,14 @@
-export interface AuthenticationRequest {
+interface BaseRequest {
     email: string;
     password: string;
 }
 
-export interface RegisterRequest {
-    password: string;
-    email: string;
+export interface AuthenticationRequest extends BaseRequest { }
+
+export interface RegisterRequest extends BaseRequest {
     firstName: string;
     lastName: string;
 }
-
 
 export interface AuthenticationResponse {
     token: string;

@@ -9,10 +9,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FinancialGoalService } from '../service/financial-goal.service';
-import { FinancialGoalRequest, FinancialGoalReponse } from '../model/financial-goal.model';
+import { FinancialGoalRequest, FinancialGoalResponse } from '../model/financial-goal.model';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../service/transaction.service';
-import { TransactionReponse } from '../model/transaction.model';
+import { TransactionResponse } from '../model/transaction.model';
 import { TransactionListComponent } from '../shared/component/transaction-list/transaction-list.component';
 
 @Component({
@@ -36,92 +36,76 @@ import { TransactionListComponent } from '../shared/component/transaction-list/t
   ]
 })
 export class GoalsComponent implements OnInit {
-
   displayedColumns: string[] = ['name', 'targetAmount', 'currentAmount', 'deadline', 'progress', 'actions'];
-  savingsTransactions: TransactionReponse[] = [];
-  goals: FinancialGoalReponse[] = [];
+  savingsTransactions: TransactionResponse[] = [];
+  goals: FinancialGoalResponse[] = [];
   newGoal: FinancialGoalRequest = { goalName: '', targetAmount: 0, currentAmount: 0, deadline: new Date() };
   isEditing: boolean[] = [];
-  transactionType: string = 'Savings'
-
 
   constructor(private financialGoalService: FinancialGoalService, private transactionService: TransactionService) { }
 
   ngOnInit(): void {
-    this.getFinancialGoal();
-    this.getTransactions();
-    this.isEditing = this.goals.map(() => false);
+    this.loadFinancialGoals();
+    this.loadTransactions();
   }
 
-  getFinancialGoal() {
-    this.financialGoalService.getAllFinancialGoal().subscribe(
-      response => {
-        this.goals = response;
+  loadFinancialGoals() {
+    this.financialGoalService.getAllFinancialGoals().subscribe(
+      goals => {
+        this.goals = goals;
+        this.isEditing = new Array(goals.length).fill(false); // Initialize editing state
       },
-      error => console.error('Error fetching transactions:', error)
+      error => console.error('Error fetching financial goals:', error)
     );
   }
 
-  getTransactions() {
+  loadTransactions() {
     this.transactionService.getAllTransactionByType('SAVINGS').subscribe(
-      response => {
-        this.savingsTransactions = response;
-      },
+      transactions => this.savingsTransactions = transactions,
       error => console.error('Error fetching transactions:', error)
     );
   }
 
   addGoal() {
     this.financialGoalService.saveFinancialGoal(this.newGoal).subscribe(
-      (response) => {
-        window.location.reload();
+      (goal: FinancialGoalResponse) => {
+        this.goals.push(goal); // Update the goals list without reloading
+        this.resetNewGoal(); // Reset form fields
       },
-      (error) => {
-        console.error('Error saving transaction:', error);
-      }
+      error => console.error('Error saving goal:', error)
     );
   }
 
   deleteGoal(index: number) {
-    this.goals.splice(index, 1);
+    const goalId = this.goals[index].id;
+    // this.financialGoalService.deleteFinancialGoal(goalId).subscribe(
+    //   () => this.goals.splice(index, 1), // Remove goal from the list
+    //   error => console.error('Error deleting goal:', error)
+    // );
   }
 
-  updateCurrentAmount(index: number, amount: number) {
-    if (amount >= 0) {
-      this.goals[index].currentAmount = amount;
-    }
-  }
-
-  // Trigger when editing begins
   startEdit(index: number) {
     this.isEditing[index] = true;
   }
 
-  // Save the changes and exit editing mode
   saveEdit(index: number) {
-    this.isEditing[index] = false;
-
     const goal = this.goals[index];
-
-    this.financialGoalService.updateCurrentAmount(goal.id, goal.currentAmount)
-      .subscribe(
-        (response) => {
-          this.isEditing[index] = false;
-        },
-        (error) => {
-          console.error('Error updating goal:', error);
-        }
-      );
+    this.financialGoalService.updateCurrentAmount(goal.id, goal.currentAmount).subscribe(
+      () => this.isEditing[index] = false,
+      error => console.error('Error updating goal:', error)
+    );
   }
 
-  // Cancel the changes and exit editing mode
   cancelEdit(index: number) {
-    this.isEditing[index] = false;
-    // Optionally, you can reset the input field value here
+    this.isEditing[index] = false; // Simply exit edit mode
   }
 
-  calculateProgress(goal: FinancialGoalReponse): string {
+  calculateProgress(goal: FinancialGoalResponse): string {
     const progress = (goal.currentAmount / goal.targetAmount) * 100;
-    return `${progress.toFixed(2)}%`;
+    return `${isNaN(progress) ? 0 : progress.toFixed(2)}%`; // Handle division by zero
+  }
+
+  resetNewGoal() {
+    this.newGoal = { goalName: '', targetAmount: 0, currentAmount: 0, deadline: new Date() };
   }
 }

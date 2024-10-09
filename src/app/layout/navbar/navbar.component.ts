@@ -12,19 +12,18 @@ import { AuthService } from '../../service/authentication.service';
   standalone: true,
   imports: [CommonModule, MatToolbarModule, MatIconModule, MatButtonModule, MatMenuModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
 
   constructor(private router: Router, private authService: AuthService) { }
 
-  isAuthenticated(): any {
-    return localStorage.getItem('token') !== null;
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
 }

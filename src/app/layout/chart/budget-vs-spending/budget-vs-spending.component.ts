@@ -2,19 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { radarChartData } from '../../../model/dashboard.model';
 import { BudgetService } from '../../../service/budget.service';
-import { BudgetReponse } from '../../../model/budget.model';
+import { BudgetResponse } from '../../../model/budget.model';
 
 @Component({
   selector: 'app-budget-vs-spending',
   standalone: true,
   imports: [],
   templateUrl: './budget-vs-spending.component.html',
-  styleUrl: './budget-vs-spending.component.scss'
+  styleUrls: ['./budget-vs-spending.component.scss'] // Corrected styleUrl to styleUrls
 })
 export class BudgetVsSpendingComponent implements OnInit {
-
-  budgets: BudgetReponse[] = [];
+  budgets: BudgetResponse[] = [];
   highestBudgetAmount: number = 0;
+  private chart?: Chart<'radar'>; // Use optional chaining for chart declaration
 
   public config: ChartConfiguration<'radar'> = {
     type: 'radar',
@@ -42,30 +42,40 @@ export class BudgetVsSpendingComponent implements OnInit {
     }
   };
 
-  chart: Chart<'radar'> | undefined;
-
   constructor(private budgetService: BudgetService) { }
 
   ngOnInit(): void {
-    this.getALlBudgets();
+    this.initializeChart();
+    this.fetchBudgets();
+  }
+
+  private initializeChart(): void {
     this.chart = new Chart('BudgetVsSpendingChart', this.config);
   }
 
-
-  getALlBudgets() {
-    this.budgetService.getAllBudget().subscribe(
-      response => {
-        this.budgets = response;
-
-        this.highestBudgetAmount = Math.max(...this.budgets.map(budget => budget.amount));
-        radarChartData.labels = this.budgets.map(budget => budget.category);
-        radarChartData.datasets[0].data = this.budgets.map(budget => budget.amountUsed);
-        radarChartData.datasets[1].data = this.budgets.map(budget => budget.amount);
-
-        this.chart?.update();
-      },
-      error => console.error('Error fetching transactions:', error)
-    );
+  private fetchBudgets(): void {
+    this.budgetService.getAllBudget().subscribe({
+      next: this.handleBudgetResponse.bind(this),
+      error: this.handleError.bind(this)
+    });
   }
 
+  private handleBudgetResponse(response: BudgetResponse[]): void {
+    this.budgets = response;
+
+    const amountsUsed = this.budgets.map(budget => budget.amountUsed ?? 0);
+    const amounts = this.budgets.map(budget => budget.amount ?? 0);
+
+    this.highestBudgetAmount = Math.max(...this.budgets.map(budget => budget.amount ?? 0));
+
+    radarChartData.labels = this.budgets.map(budget => budget.category);
+    radarChartData.datasets[0].data = amountsUsed;
+    radarChartData.datasets[1].data = amounts;
+
+    this.chart?.update(); // Use optional chaining to avoid null reference
+  }
+
+  private handleError(error: any): void {
+    console.error('Error fetching budgets:', error);
+  }
 }

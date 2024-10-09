@@ -29,7 +29,6 @@ export class LoginComponent {
     role: Role.ADMIN
   }
 
-
   constructor(private fb: FormBuilder, private authService: AuthService, private userService: UserService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -41,15 +40,15 @@ export class LoginComponent {
     this.authService.authenticate(this.loginForm.value).subscribe(response => {
       localStorage.setItem('isLoggedIn', "true");
       localStorage.setItem('token', response.token);
-      this.getCurrentUser(response.token);
+      this.getCurrentUser();
       this.router.navigate(['/dashboard']);
     }, error => {
       console.error('Login error:', error);
     });
   }
 
-  getCurrentUser(token: string) {
-    this.userService.getCurrentUser(token).subscribe(
+  getCurrentUser() {
+    this.userService.getCurrentUser().subscribe(
       response => {
         this.currentUser = response;
         localStorage.setItem('user', JSON.stringify(this.currentUser));

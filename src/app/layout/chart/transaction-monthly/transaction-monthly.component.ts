@@ -1,21 +1,19 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { incomeVsExpensesData } from '../../../model/dashboard.model';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { TransactionService } from '../../../service/transaction.service';
-import { TransactionReponse } from '../../../model/transaction.model';
 
-Chart.register(...registerables)
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-transaction-monthly',
   standalone: true,
-  imports: [],
   templateUrl: './transaction-monthly.component.html',
-  styleUrl: './transaction-monthly.component.scss'
+  styleUrls: ['./transaction-monthly.component.scss']
 })
 export class TransactionMonthlyComponent implements OnInit {
-
   userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
+
   public config: ChartConfiguration<'bar'> = {
     type: 'bar',
     data: incomeVsExpensesData,
@@ -36,36 +34,30 @@ export class TransactionMonthlyComponent implements OnInit {
           }
         }
       }
-    },
+    }
   };
 
-  chart: Chart<'bar'> | undefined;
-
-  monthlyIncome = [];
-  monthlyExpenses = [];
-  monthlySavings = [];
+  chart!: Chart<'bar'>;  // Use definite assignment assertion
+  monthlyIncome: number[] = [];
+  monthlyExpenses: number[] = [];
+  monthlySavings: number[] = [];
 
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
     this.fetchYearlyMonthlyData();
+    this.initializeChart();
+  }
+
+  private initializeChart(): void {
     this.chart = new Chart('IncomeVsExpensesChart', this.config);
   }
 
-
-  fetchYearlyMonthlyData(): void {
+  private fetchYearlyMonthlyData(): void {
     this.transactionService.getYearlyData('2024').subscribe(
-      (data) => {
-        this.monthlyIncome = data.INCOME;
-        this.monthlyExpenses = data.EXPENSES;
-        this.monthlySavings = data.SAVINGS;
-
-        incomeVsExpensesData.datasets[0].data = this.monthlyIncome
-        incomeVsExpensesData.datasets[1].data = this.monthlyExpenses
-        incomeVsExpensesData.datasets[2].data = this.monthlySavings
-
-        this.chart?.update();
-
+      (response) => {
+        this.updateChartData(response);
+        this.chart.update();
       },
       (error) => {
         console.error('Error fetching monthly data:', error);
@@ -73,4 +65,13 @@ export class TransactionMonthlyComponent implements OnInit {
     );
   }
 
+  private updateChartData(response: any): void {
+    this.monthlyIncome = response.income || [];
+    this.monthlyExpenses = response.expenses || [];
+    this.monthlySavings = response.savings || [];
+
+    incomeVsExpensesData.datasets[0].data = this.monthlyIncome;
+    incomeVsExpensesData.datasets[1].data = this.monthlyExpenses;
+    incomeVsExpensesData.datasets[2].data = this.monthlySavings;
+  }
 }

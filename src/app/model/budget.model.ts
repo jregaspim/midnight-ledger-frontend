@@ -1,11 +1,11 @@
-export interface BudgetRequest {
+interface BaseBudget {
     amount: number;
     category: string;
 }
 
-export interface BudgetReponse {
+export interface BudgetRequest extends BaseBudget { }
+
+export interface BudgetResponse extends BaseBudget {
     id: number;
-    amount: number;
-    category: string;
-    amountUsed: number;
+    amountUsed?: number;
 }

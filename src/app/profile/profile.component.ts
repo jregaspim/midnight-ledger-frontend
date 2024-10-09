@@ -16,10 +16,9 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
-
   user = {
     name: 'John Doe',
     email: 'john.doe@example.com',
@@ -27,12 +26,13 @@ export class ProfileComponent {
     password: ''
   };
 
-  updateProfile() {
+  updateProfile(): void {
     console.log('Profile updated:', this.user);
+    // Call a service to update the profile here
   }
 
-  changePassword() {
+  changePassword(): void {
     console.log('Password changed:', this.user.password);
+    // Call a service to change the password here
   }
-
 }

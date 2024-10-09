@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TransactionService } from '../service/transaction.service';
 import { TransactionListComponent } from '../shared/component/transaction-list/transaction-list.component';
 import { TransactionFormComponent } from "../shared/component/transaction-form/transaction-form.component";
-import { TransactionReponse } from '../model/transaction.model';
+import { TransactionResponse } from '../model/transaction.model';
 import { expense_categories } from '../model/constants';
 
 @Component({
@@ -29,109 +29,118 @@ import { expense_categories } from '../model/constants';
 })
 export class ExpensesComponent implements OnInit {
   userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
-  categories: string[] = expense_categories
-  expensesTransactions: TransactionReponse[] = [];
-  incomeTransactions: TransactionReponse[] = [];
-  filteredTransactions: TransactionReponse[] = [];
+  categories: string[] = expense_categories;
+  expensesTransactions: TransactionResponse[] = [];
+  filteredTransactions: TransactionResponse[] = [];
   totalExpenses: number = 0;
   selectedFilter: string = 'all';
-  transactionType: string = 'Expenses'
+  transactionType: string = 'Expenses';
 
-  dailyIncomeExpenses = { expenses: 0, income: 0 }
+  dailyIncomeExpenses = { expenses: 0, income: 0 };
   monthlyIncomeExpenses = { expenses: 0, income: 0 };
   yearlyIncomeExpenses = { expenses: 0, income: 0 };
+
+  private now: Date = new Date(); // Cache current date
 
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
+    this.loadTransactions();
+  }
+
+  private loadTransactions() {
     this.getTransactions();
     this.getIncomeTransactions();
   }
 
-  getTransactions() {
+  private getTransactions() {
     this.transactionService.getAllTransactionByType('EXPENSES').subscribe(
       response => {
         this.expensesTransactions = response;
-        this.dailyIncomeExpenses.expenses = this.getTotalTransaction(response, this.isToday);
-        this.monthlyIncomeExpenses.expenses = this.getTotalTransaction(response, this.isCurrentMonth);
-        this.yearlyIncomeExpenses.expenses = this.getTotalTransaction(response, this.isCurrentYear);
+        this.updateIncomeExpenseTotals(response, 'expenses');
         this.filterExpenses('all');
       },
-      error => console.error('Error fetching transactions:', error)
+      error => this.handleError('Error fetching expense transactions', error)
     );
   }
 
-  getIncomeTransactions() {
+  private getIncomeTransactions() {
     this.transactionService.getAllTransactionByType('INCOME').subscribe(
-      response => {
-        this.dailyIncomeExpenses.income = this.getTotalTransaction(response, this.isToday);
-        this.monthlyIncomeExpenses.income = this.getTotalTransaction(response, this.isCurrentMonth);
-        this.yearlyIncomeExpenses.income = this.getTotalTransaction(response, this.isCurrentYear);
-      },
-      error => console.error('Error fetching transactions:', error)
+      response => this.updateIncomeExpenseTotals(response, 'income'),
+      error => this.handleError('Error fetching income transactions', error)
     );
   }
 
-  private getTotalTransaction(transactions: TransactionReponse[], dateCondition: (date: Date) => boolean): number {
-    return transactions.reduce((total, transaction) => {
-      const transactionDate = new Date(transaction.transactionDate);
-      return dateCondition(transactionDate) ? total + transaction.amount : total;
-    }, 0);
+  private updateIncomeExpenseTotals(transactions: TransactionResponse[], type: string) {
+    const total = this.getTotalTransaction(transactions);
+    if (type === 'expenses') {
+      this.dailyIncomeExpenses.expenses = total.daily;
+      this.monthlyIncomeExpenses.expenses = total.monthly;
+      this.yearlyIncomeExpenses.expenses = total.yearly;
+    } else {
+      this.dailyIncomeExpenses.income = total.daily;
+      this.monthlyIncomeExpenses.income = total.monthly;
+      this.yearlyIncomeExpenses.income = total.yearly;
+    }
   }
 
-  // Condition Functions
+  private getTotalTransaction(transactions: TransactionResponse[]): any {
+    const totals = { daily: 0, monthly: 0, yearly: 0 };
+    transactions.forEach(transaction => {
+      const transactionDate = new Date(transaction.transactionDate);
+      if (this.isToday(transactionDate)) totals.daily += transaction.amount;
+      if (this.isCurrentMonth(transactionDate)) totals.monthly += transaction.amount;
+      if (this.isCurrentYear(transactionDate)) totals.yearly += transaction.amount;
+    });
+    return totals;
+  }
+
   private isToday(date: Date): boolean {
-    const today = new Date();
-    return date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
+    return date.toDateString() === this.now.toDateString();
   }
 
   private isCurrentMonth(date: Date): boolean {
-    const today = new Date();
-    return date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
+    return date.getMonth() === this.now.getMonth() && date.getFullYear() === this.now.getFullYear();
   }
 
   private isCurrentYear(date: Date): boolean {
-    const today = new Date();
-    return date.getFullYear() === today.getFullYear();
+    return date.getFullYear() === this.now.getFullYear();
   }
 
   filterExpenses(period: string) {
     this.selectedFilter = period;
-    const now = new Date();
     this.filteredTransactions = this.expensesTransactions.filter(transaction => {
       const transactionDate = new Date(transaction.transactionDate);
-      return this.applyFilter(transactionDate, period, now);
+      return this.applyFilter(transactionDate, period);
     }).sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
 
     this.updateTotalExpenses();
   }
 
-  applyFilter(transactionDate: Date, period: string, now: Date): boolean {
+  applyFilter(transactionDate: Date, period: string): boolean {
     switch (period) {
-      case 'day':
-        return transactionDate.toDateString() === now.toDateString();
-      case 'week':
-        return this.isDateInCurrentWeek(transactionDate, now);
-      case 'month':
-        return transactionDate.getMonth() === now.getMonth() && transactionDate.getFullYear() === now.getFullYear();
-      case 'year':
-        return transactionDate.getFullYear() === now.getFullYear();
-      default:
-        return true;
+      case 'day': return this.isToday(transactionDate);
+      case 'week': return this.isDateInCurrentWeek(transactionDate);
+      case 'month': return this.isCurrentMonth(transactionDate);
+      case 'year': return this.isCurrentYear(transactionDate);
+      default: return true;
     }
   }
 
-  isDateInCurrentWeek(transactionDate: Date, now: Date): boolean {
-    const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
+  private isDateInCurrentWeek(transactionDate: Date): boolean {
+    const weekStart = new Date(this.now);
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6);
     return transactionDate >= weekStart && transactionDate <= weekEnd;
   }
 
-  updateTotalExpenses() {
+  private updateTotalExpenses() {
     this.totalExpenses = this.filteredTransactions.reduce((sum, transaction) => sum + transaction.amount, 0);
+  }
+
+  private handleError(message: string, error: any) {
+    console.error(message, error);
+    // Optionally display user-friendly error messages in the UI
   }
 }

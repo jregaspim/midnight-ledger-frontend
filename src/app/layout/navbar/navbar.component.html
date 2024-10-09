@@ -2,13 +2,10 @@
     <span class="app-title">Midnight Ledger</span>
     <span class="spacer"></span>
 
-    <!-- Search -->
     <mat-icon *ngIf="isAuthenticated()">search</mat-icon>
 
-    <!-- Notifications -->
     <mat-icon *ngIf="isAuthenticated()">notifications</mat-icon>
 
-    <!-- Profile Dropdown -->
     <button mat-icon-button [matMenuTriggerFor]="accountMenu" *ngIf="isAuthenticated()">
         <mat-icon>account_circle</mat-icon>
     </button>

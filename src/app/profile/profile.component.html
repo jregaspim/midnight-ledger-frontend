@@ -2,23 +2,25 @@
     <mat-card class="profile-card">
         <mat-card-title>Profile Information</mat-card-title>
         <mat-card-content>
-            <form>
+            <form (ngSubmit)="updateProfile()">
                 <mat-form-field class="full-width">
                     <mat-label>Name</mat-label>
-                    <input matInput [(ngModel)]="user.name" name="name" placeholder="Enter your name">
+                    <input matInput [(ngModel)]="user.name" name="name" placeholder="Enter your name" required>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
                     <mat-label>Email</mat-label>
-                    <input matInput [(ngModel)]="user.email" name="email" placeholder="Enter your email">
+                    <input matInput [(ngModel)]="user.email" name="email" placeholder="Enter your email" type="email"
+                        required>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
                     <mat-label>Phone</mat-label>
-                    <input matInput [(ngModel)]="user.phone" name="phone" placeholder="Enter your phone number">
+                    <input matInput [(ngModel)]="user.phone" name="phone" placeholder="Enter your phone number"
+                        required>
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" (click)="updateProfile()">Update Profile</button>
+                <button mat-raised-button color="primary" type="submit">Update Profile</button>
             </form>
         </mat-card-content>
     </mat-card>
@@ -26,14 +28,14 @@
     <mat-card class="profile-card">
         <mat-card-title>Change Password</mat-card-title>
         <mat-card-content>
-            <form>
+            <form (ngSubmit)="changePassword()">
                 <mat-form-field class="full-width">
                     <mat-label>New Password</mat-label>
                     <input matInput type="password" [(ngModel)]="user.password" name="password"
-                        placeholder="Enter your new password">
+                        placeholder="Enter your new password" required>
                 </mat-form-field>
 
-                <button mat-raised-button color="warn" (click)="changePassword()">Change Password</button>
+                <button mat-raised-button color="warn" type="submit">Change Password</button>
             </form>
         </mat-card-content>
     </mat-card>

@@ -13,7 +13,6 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = this.authService.getToken();
 
-        // Clone the request and add the token if it exists
         let clonedRequest = req;
         if (token) {
             clonedRequest = req.clone({
@@ -24,11 +23,9 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(clonedRequest).pipe(
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401 || error.status === 403) {
-                    // Token might be expired, so logout the user and navigate to login
                     this.authService.logout();
                     this.router.navigate(['/login']);
                 }
-
 
                 return throwError(() => error);
             })

@@ -4,30 +4,27 @@ import { Observable } from 'rxjs';
 import { Debt } from '../model/debt.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DebtService {
-  private apiUrl = 'http://localhost:8082/api/v1/debts'; // Replace with your backend URL
+  private apiUrl = 'http://localhost:8082/api/v1/debts';
 
   constructor(private http: HttpClient) { }
 
   private getAuthHeaders(): HttpHeaders {
-    // Retrieve the token from localStorage (or another secure location)
-    const token = localStorage.getItem('token');
-
+    const token = localStorage.getItem('token') || '';
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // Include the token as a Bearer token
+      'Authorization': `Bearer ${token}`,
     });
   }
-
 
   getDebts(): Observable<Debt[]> {
     return this.http.get<Debt[]>(this.apiUrl, { headers: this.getAuthHeaders() });
   }
 
-  createDebt(debt: Debt): Observable<any> {
-    return this.http.post(this.apiUrl, debt, { headers: this.getAuthHeaders() });
+  createDebt(debt: Debt): Observable<Debt> { // Specify the response type
+    return this.http.post<Debt>(this.apiUrl, debt, { headers: this.getAuthHeaders() });
   }
 
   deleteDebt(id: number): Observable<void> {

@@ -41,14 +41,13 @@ export class TransactionFormComponent implements OnInit {
     transactionDate: '',
     category: '',
     description: '',
-    transactionType: ''
+    transactionType: 'EXPENSES'
   };
 
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
     this.newTransaction.transactionDate = new Date().toISOString().split('T')[0];
-    this.newTransaction.transactionType = this.transactionType.toUpperCase();
   }
 
   addTransaction() {

@@ -11,7 +11,6 @@ import { expense_categories, recurrence_type } from '../model/constants';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-recurring-transaction',
   templateUrl: './recurring-transaction.component.html',
@@ -31,35 +30,38 @@ import { CommonModule } from '@angular/common';
 })
 export class RecurringTransactionComponent implements OnInit {
   userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
-  categories: string[] = expense_categories;
-  frequencies: string[] = recurrence_type;
+  categories = expense_categories;
+  frequencies = recurrence_type;
+
+  recurringTransactions: RecurringTransactionResponse[] = [];
+  newRecurringTransaction: RecurringTransactionRequest = {
+    transactionName: '',
+    amount: 0,
+    category: '',
+    recurrenceType: 'Daily',
+    description: ''
+  };
 
   constructor(private recurringTransactionService: RecurringTransactionService) { }
 
   ngOnInit(): void {
-    this.getReccuringTransactions();
+    this.loadRecurringTransactions();
   }
 
-  recurringTransactions: RecurringTransactionResponse[] = [];
-  newRecurringTransaction: RecurringTransactionRequest = { transactionName: '', amount: 0, category: '', recurrenceType: '', description: '' };
-
-  getReccuringTransactions() {
-    this.recurringTransactionService.getAllRecurringTransaction().subscribe(
-      response => {
-        this.recurringTransactions = response;
-      },
+  private loadRecurringTransactions(): void {
+    this.recurringTransactionService.getAllRecurringTransactions().subscribe(
+      response => this.recurringTransactions = response,
       error => console.error('Error fetching transactions:', error)
     );
   }
 
-  addRecurringTransaction() {
+  addRecurringTransaction(): void {
     this.recurringTransactionService.saveRecurringTransaction(this.newRecurringTransaction).subscribe(
-      (response) => {
-        window.location.reload();
+      () => {
+        this.loadRecurringTransactions();  // Refresh the list after adding
+        this.resetNewTransaction();         // Reset the form
       },
-      (error) => {
-        console.error('Error saving transaction:', error);
-      }
+      error => console.error('Error saving transaction:', error)
     );
   }
 
@@ -68,16 +70,19 @@ export class RecurringTransactionComponent implements OnInit {
 
     if (transactionToDelete) {
       this.recurringTransactionService.deleteRecurringTransaction(transactionToDelete.id).subscribe({
-        next: () => {
-          this.recurringTransactions.splice(index, 1);
-          window.location.reload();
-        },
-        error: (error) => {
-          console.error('Error deleting transaction:', error);
-        }
+        next: () => this.loadRecurringTransactions(), // Refresh the list after deletion
+        error: error => console.error('Error deleting transaction:', error)
       });
     }
   }
 
-
+  private resetNewTransaction(): void {
+    this.newRecurringTransaction = {
+      transactionName: '',
+      amount: 0,
+      category: '',
+      recurrenceType: 'Daily',
+      description: ''
+    };
+  }
 }

@@ -3,20 +3,18 @@ import { generateColors, topSpendingCategories } from '../../../model/dashboard.
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { TransactionService } from '../../../service/transaction.service';
 
-Chart.register(...registerables)
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-top-spending-categories',
   standalone: true,
-  imports: [],
   templateUrl: './top-spending-categories.component.html',
-  styleUrl: './top-spending-categories.component.scss'
+  styleUrls: ['./top-spending-categories.component.scss']
 })
 export class TopSpendingCategoriesComponent implements OnInit {
-
   userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   spendingData: any = {};
-  totalAmount: number = 0;
+  totalAmount = 0;
 
   public config: ChartConfiguration<'bar'> = {
     type: 'bar',
@@ -38,35 +36,38 @@ export class TopSpendingCategoriesComponent implements OnInit {
           }
         }
       }
-    },
+    }
   };
 
-  chart: Chart<'bar'> | undefined;
+  chart!: Chart<'bar'>;  // Use definite assignment assertion
 
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
+    this.initializeChart();
     this.loadBudgetData();
+  }
+
+  private initializeChart(): void {
     this.chart = new Chart('TopSpendingCategoriesChart', this.config);
   }
 
-  loadBudgetData(): void {
+  private loadBudgetData(): void {
     this.transactionService.getTopTransaction("EXPENSES").subscribe(
-      (response) => {
-        this.spendingData = response;
-        const labels = Object.keys(response);
-        const data: number[] = Object.values(response);
-
-        topSpendingCategories.labels = labels;
-        topSpendingCategories.datasets[0].data = data;
-        topSpendingCategories.datasets[0].backgroundColor = generateColors(topSpendingCategories.datasets[0].data.length);
-
-        this.chart?.update();
-      },
-      (error) => {
-        console.error('Error fetching budget data', error);
-      }
+      response => this.updateChartData(response),
+      error => console.error('Error fetching budget data:', error)
     );
   }
 
+  private updateChartData(response: any): void {
+    this.spendingData = response;
+    const labels = Object.keys(response);
+    const data = Object.values(response);
+
+    topSpendingCategories.labels = labels;
+    topSpendingCategories.datasets[0].data = data as number[];
+    topSpendingCategories.datasets[0].backgroundColor = generateColors(data.length);
+
+    this.chart.update();
+  }
 }

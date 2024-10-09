@@ -3,7 +3,7 @@ export interface Debt {
     accountId: number;
     amount: number;
     interestRate: number;
-    dueDate: string; // Adjust to the correct date format if needed
+    dueDate: string;
     category: string;
     lender: string;
     repaymentSchedule: string;

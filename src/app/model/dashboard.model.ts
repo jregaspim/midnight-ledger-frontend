@@ -29,7 +29,7 @@ export const incomeVsExpensesData = {
     datasets: [
         {
             label: 'Monthly Income',
-            data: [], // Income values
+            data: [] as number[], // Income values
             backgroundColor: 'rgba(75, 192, 192, 0.6)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1
@@ -52,12 +52,25 @@ export const incomeVsExpensesData = {
 };
 
 export const topSpendingCategories = {
-    labels: expense_categories,
+    labels: expense_categories, // Categories
     datasets: [{
-        label: 'Total Amount Spent ($)',
-        data: [] as number[],
-        backgroundColor: [] as string[],
-        borderWidth: 1
+        label: 'Total Amount Spent ($)', // Dataset label
+        data: [] as number[], // Amounts corresponding to the categories
+        backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',  // Groceries
+            'rgba(54, 162, 235, 0.2)',  // Rent
+            'rgba(255, 206, 86, 0.2)',  // Dining Out
+            'rgba(153, 102, 255, 0.2)', // Entertainment
+            'rgba(255, 159, 64, 0.2)'   // Transportation
+        ],
+        borderColor: [
+            'rgba(75, 192, 192, 1)',    // Groceries
+            'rgba(54, 162, 235, 1)',    // Rent
+            'rgba(255, 206, 86, 1)',    // Dining Out
+            'rgba(153, 102, 255, 1)',   // Entertainment
+            'rgba(255, 159, 64, 1)'     // Transportation
+        ],
+        borderWidth: 1 // Border thickness
     }]
 };
 

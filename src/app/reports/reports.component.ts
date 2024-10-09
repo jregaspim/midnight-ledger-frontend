@@ -5,7 +5,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { TransactionService } from '../service/transaction.service';
-import { TransactionReponse } from '../model/transaction.model';
+import { TransactionResponse } from '../model/transaction.model';
+import { CommonModule } from '@angular/common';
+
+interface UserSettings {
+  currency: string;
+}
 
 @Component({
   selector: 'app-reports',
@@ -18,12 +23,17 @@ import { TransactionReponse } from '../model/transaction.model';
     MatButtonModule,
     FormsModule,
     CurrencyPipe,
-    DatePipe
+    DatePipe,
+    CommonModule
   ]
 })
 export class ReportsComponent implements OnInit {
-  userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
-  transactions: TransactionReponse[] = [];
+  userSettings: UserSettings = JSON.parse(localStorage.getItem('settings') || '{}');
+  transactions: TransactionResponse[] = [];
+  totalIncome: number = 0;
+  totalExpenses: number = 0;
+  netSavings: number = 0;
+  errorMessage: string | null = null;
 
   constructor(private transactionService: TransactionService) { }
 
@@ -31,29 +41,29 @@ export class ReportsComponent implements OnInit {
     this.getTransactions();
   }
 
-
   getTransactions() {
     this.transactionService.getAllTransaction().subscribe(
       response => {
         this.transactions = response;
+        this.calculateTotals(); // Calculate totals after fetching transactions
+        this.errorMessage = null; // Reset error message
       },
-      error => console.error('Error fetching transactions:', error)
+      error => {
+        console.error('Error fetching transactions:', error);
+        this.errorMessage = 'Failed to fetch transactions. Please try again later.'; // Show error message
+      }
     );
   }
 
-  getTotalIncome(): number {
-    return this.transactions
+  calculateTotals() {
+    this.totalIncome = this.transactions
       .filter(t => t.transactionType === 'INCOME')
       .reduce((sum, t) => sum + t.amount, 0);
-  }
 
-  getTotalExpenses(): number {
-    return this.transactions
+    this.totalExpenses = this.transactions
       .filter(t => t.transactionType === 'EXPENSES')
       .reduce((sum, t) => sum + t.amount, 0);
-  }
 
-  getNetSavings(): number {
-    return this.getTotalIncome() - this.getTotalExpenses();
+    this.netSavings = this.totalIncome - this.totalExpenses;
   }
 }

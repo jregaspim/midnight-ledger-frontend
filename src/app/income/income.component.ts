@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TransactionService } from '../service/transaction.service';
 import { TransactionListComponent } from '../shared/component/transaction-list/transaction-list.component';
 import { TransactionFormComponent } from "../shared/component/transaction-form/transaction-form.component";
-import { TransactionReponse } from '../model/transaction.model';
+import { TransactionResponse } from '../model/transaction.model';
 import { income_categories } from '../model/constants';
 
 @Component({
@@ -31,8 +31,8 @@ export class IncomeComponent implements OnInit {
 
   userSettings = JSON.parse(localStorage.getItem('settings') || '{}');
   categories: string[] = income_categories;
-  incomeTransactions: TransactionReponse[] = [];
-  filteredTransactions: TransactionReponse[] = [];
+  incomeTransactions: TransactionResponse[] = [];
+  filteredTransactions: TransactionResponse[] = [];
   totalIncome: number = 0;
   selectedFilter: string = 'all';
   transactionType: string = 'Income'

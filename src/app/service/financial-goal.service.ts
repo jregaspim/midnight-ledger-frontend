@@ -1,28 +1,25 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FinancialGoalRequest, SavingProgressResponse } from '../model/financial-goal.model';
+import { FinancialGoalRequest, FinancialGoalResponse, SavingProgressResponse } from '../model/financial-goal.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FinancialGoalService {
-
   private apiUrl = 'http://localhost:8082/api/v1/financial-goal';
 
   constructor(private http: HttpClient) { }
 
   private getAuthHeaders(): HttpHeaders {
-    // Retrieve the token from localStorage (or another secure location)
-    const token = localStorage.getItem('token');
-
+    const token = localStorage.getItem('token') || ''; // Provide a default value to prevent errors
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // Include the token as a Bearer token
+      'Authorization': `Bearer ${token}`,
     });
   }
 
-  getAllFinancialGoal(): Observable<any> {
+  getAllFinancialGoals(): Observable<any> { // Updated method name for clarity
     return this.http.get(this.apiUrl, { headers: this.getAuthHeaders() });
   }
 
@@ -30,11 +27,11 @@ export class FinancialGoalService {
     return this.http.get<SavingProgressResponse>(`${this.apiUrl}/savings-progress`, { headers: this.getAuthHeaders() });
   }
 
-  saveFinancialGoal(financialGoal: FinancialGoalRequest): Observable<any> {
-    return this.http.post(this.apiUrl, financialGoal, { headers: this.getAuthHeaders() });
+  saveFinancialGoal(financialGoal: FinancialGoalRequest): Observable<FinancialGoalResponse> { // Specify return type
+    return this.http.post<FinancialGoalResponse>(this.apiUrl, financialGoal, { headers: this.getAuthHeaders() });
   }
 
-  updateCurrentAmount(id: number, currentAmount: number): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/updateCurrentAmount`, { currentAmount }, { headers: this.getAuthHeaders() });
+  updateCurrentAmount(id: number, currentAmount: number): Observable<void> { // Specify return type
+    return this.http.patch<void>(`${this.apiUrl}/${id}/updateCurrentAmount`, { currentAmount }, { headers: this.getAuthHeaders() });
   }
 }

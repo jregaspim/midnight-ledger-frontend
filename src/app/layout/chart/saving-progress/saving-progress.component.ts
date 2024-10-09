@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { colors, ChartData, noDataPlugin } from '../../../model/dashboard.model';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
-import { FinancialGoalReponse, SavingProgress, SavingProgressResponse } from '../../../model/financial-goal.model';
+import { SavingProgressResponse } from '../../../model/financial-goal.model';
 import { FinancialGoalService } from '../../../service/financial-goal.service';
 
 Chart.register(...registerables)
@@ -25,8 +25,6 @@ export class SavingProgressComponent implements OnInit {
     datasets: []
   };
 
-
-
   public config: ChartConfiguration<'line'> = {
     type: 'line',
     data: this.savingsProgressData,
@@ -41,10 +39,7 @@ export class SavingProgressComponent implements OnInit {
     plugins: [noDataPlugin]
   };
 
-
-
   chart: Chart<'line'> | undefined;
-
 
   constructor(private financialGoalService: FinancialGoalService) { }
 
@@ -52,7 +47,6 @@ export class SavingProgressComponent implements OnInit {
     this.loadSavingProgress();
     this.chart = new Chart('SavingProgressChart', this.config);
   }
-
 
   loadSavingProgress(): void {
     this.financialGoalService.getAllFinancialGoalSavingProgressTotalPerMonth().subscribe(

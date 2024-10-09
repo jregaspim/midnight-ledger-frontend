@@ -1,22 +1,26 @@
+import { TransactionType } from "./constants";
+
 export interface TransactionRequest {
     amount: number;
-    transactionDate: string; // Corrected type to string
+    transactionDate: string;
     category: string;
-    description: string;
-    transactionType: string;
+    description?: string;
+    transactionType: TransactionType;
 }
 
-export interface TransactionReponse {
+export interface TransactionResponse {
     id: number;
     amount: number;
     transactionDate: string;
     category: string;
-    description: string;
-    transactionType: string;
+    description?: string;
+    transactionType: TransactionType;
 }
 
+// Adjust as necessary
+
 export interface MonthlyData {
-    EXPENSES: [];
-    INCOME: [];
-    SAVINGS: []
+    expenses: number[];
+    income: number[];
+    savings: number[];
 }

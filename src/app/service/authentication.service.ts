@@ -1,14 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RegisterRequest, AuthenticationResponse, AuthenticationRequest } from '../model/authentication.model';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private apiUrl = 'http://localhost:8082/api/v1/auth';
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -23,6 +22,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
@@ -32,12 +32,11 @@ export class AuthService {
   isTokenExpired(token: string): boolean {
     if (!token) return true;
     const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+    return (Math.floor(Date.now() / 1000)) >= expiry;
   }
 
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('token');
-    return token !== null;
+    const token = this.getToken();
+    return token !== null && !this.isTokenExpired(token);
   }
-
 }

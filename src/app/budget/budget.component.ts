@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { BudgetReponse, BudgetRequest } from '../model/budget.model';
+import { BudgetResponse, BudgetRequest } from '../model/budget.model';
 import { BudgetService } from '../service/budget.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class BudgetComponent implements OnInit {
   ];
 
   displayedColumns: string[] = ['category', 'amount', 'used', 'actions'];
-  budgets: BudgetReponse[] = [];
+  budgets: BudgetResponse[] = [];
   newBudget: BudgetRequest = { category: '', amount: 0 };
 
 
