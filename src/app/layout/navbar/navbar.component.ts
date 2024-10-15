@@ -19,7 +19,7 @@ export class NavbarComponent {
   constructor(private router: Router, private authService: AuthService) { }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    return this.authService.isAuthenticated();
   }
 
   logout(): void {
